@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>環境構築手順</title>
+  </head>
+
+  <body>
+    <h1>環境構築手順</h1>
+
+    <h2>目次</h2>
+
+    <ol>
+      <li><a href="#raspi-setup">Raspberry Pi のセットアップ</a></li>
+      <li><a href="#arduino-setup">Arduino UNO のセットアップ</a></li>
+    </ol>
+
+    <hr />
+
+    <h2 id="raspi-setup">Raspberry Pi のセットアップ</h2>
+
+    <p>自動運転を行うモジュールとして、Raspberry Pi 4 Model B を使用する。この項では、そのセットアップの手順を示す。</p>
+
+    <h3>OS イメージ/書き込みソフトの用意</h3>
+
+    <p>
+      Raspberry Pi 4 Model B を動作させるため、<a href="https://www.raspberrypi.org/downloads/">Raspberry Pi OS</a>
+      が必要になる。汎用性のために、web ページから OS イメージを直接入手することを強く推奨する。GNU/Linux では
+      <code>dd</code> のようなプログラムで OS イメージを書き込むことが出来るが、Windows 環境では、<a
+        href="https://rufus.ie/"
+        >Rufus</a
+      >
+      のようなイメージを書き込むソフトウェアも用意する必要がある。
+    </p>
+
+    <img src="img/raspios.png" />
+
+    <h3>SD カードへの OS の書き込み</h3>
+
+    <p>
+      Windows では、Rufus のようなソフトウェアを使用して書き込む。Rufus を起動し、SD
+      カードを選択後、ウィンドウ内にイメージファイルをドラック & ドロップし、"スタート"をクリックする。 Rufus
+      以外のソフトウェアを使用する場合は、各ソフトウェアのドキュメントを参照すること。
+    </p>
+
+    <img src="img/rufus.png" />
+
+    <h3>実行環境の準備</h3>
+
+    <p>
+      画面上の指示に従い、OS
+      をセットアップする。セットアップ後、端末エミュレータを開き、以下のコマンドを入力して、実行環境の準備を行う。
+    </p>
+
+    <p>
+      <code>
+        sudo apt update<br />
+        sudo apt upgrade<br />
+        sudo apt install python3 python3-opencv<br />
+      </code>
+    </p>
+
+    <h3>コードの転送</h3>
+
+    <p>バキバキのちんこ</p>
+
+    <hr />
+
+    <h2 id="arduino-setup">Arduino UNO のセットアップ</h2>
+
+    <p>模型車両の制御には、Arduino UNO を利用する。この項では、セットアップ手順を示す。</p>
+
+    <h3>開発環境の準備</h3>
+
+    <p>
+      模型車両を操作するプログラムを Arduino UNO に書き込むために、Arduino IDE が必要になる。Arduino IDE は、<a
+        href="https://www.arduino.cc/en/Main/Software"
+        >Arduino の web ページ</a
+      >から入手が可能である。Windows 10 であれば、Microsoft Store からも入手が可能である。
+    </p>
+
+    <img src="img/arduino.png" />
+
+    <h3>プログラムの書き込み</h3>
+
+    <p>ちんちんもみもみ</p>
+  </body>
+</html>
