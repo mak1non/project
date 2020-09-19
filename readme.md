@@ -4,7 +4,7 @@
 
 ## 内容説明
 
-- `doc/`: 説明書
+- `docs/`: 説明書
 - `src/`: ソースコード
 - `prerequisite.md`: 開発環境, 実行環境のメモ
 - `reference.md`: 参考文献
