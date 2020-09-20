@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>環境構築手順</title>
+    <title>説明書</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <h1>環境構築手順</h1>
+    <h1>説明書</h1>
 
     <h2>目次</h2>
 
@@ -49,22 +49,31 @@
 
     <h3>実行環境の準備</h3>
 
-    <p>
-      画面上の指示に従い、OS
-      をセットアップする。セットアップ後、端末エミュレータを開き、以下のコマンドを入力して、実行環境の準備を行う。
-    </p>
+    <p>画面上の指示に従い、OSをセットアップする。</p>
+
+    <!-- ここにインストール中の画像 -->
+
+    <p>セットアップ後、端末エミュレータを開き、以下のコマンドを入力して、実行環境の準備を行う。</p>
 
     <p>
       <code>
-        sudo apt update<br />
-        sudo apt upgrade<br />
-        sudo apt install python3 python3-opencv<br />
+        # apt update<br />
+        # apt upgrade<br />
+        # apt install python3 python3-opencv<br />
       </code>
     </p>
 
-    <h3>コードの転送</h3>
+    <!-- 端末エミュレータの位置 -->
 
-    <p>バキバキのちんこ</p>
+    <h3>コードの準備</h3>
+
+    <p>
+      Python のプログラムを <code>scp</code> コマンドや USB メモリでコピーして、Raspberry Pi
+      上から実行できるようにする。もしくは、下記のコマンドで GitHub 上のリポジトリからデータを取得しても良い (あらかじめ
+      <code>git</code> をインストールしておく必要がある)。
+    </p>
+
+    <p><code> $ git clone --depth 1 https://github.com/mak1non/project.git </code></p>
 
     <hr />
 
@@ -81,10 +90,12 @@
       >から入手が可能である。Windows 10 であれば、Microsoft Store からも入手が可能である。
     </p>
 
-    <img src="img/arduino.png" />
+    <img src="img/get-arduino.png" />
+
+    <img src="img/get-arduino-ms.png" />
 
     <h3>プログラムの書き込み</h3>
 
-    <p>ちんちんもみもみ</p>
+    <p>執筆中</p>
   </body>
 </html>
