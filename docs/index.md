@@ -2,12 +2,12 @@
 
 ## 目次
 
-1.  [Raspberry Pi のセットアップ](#raspi-setup)
-2.  [Arduino UNO のセットアップ](#arduino-setup)
+1. [Raspberry Pi のセットアップ](#raspi-setup)
+2. [Arduino UNO のセットアップ](#arduino-setup)
 
 ---
 
-## Raspberry Pi のセットアップ {: #raspi-setup}
+<h2 id="raspi-setup">Raspberry Pi のセットアップ</h2>
 
 自動運転を行うモジュールとして、Raspberry Pi 4 Model B を使用する。この項では、そのセットアップの手順を示す。
 
@@ -45,7 +45,7 @@ $ git clone --depth 1 https://github.com/mak1non/project.git
 
 ---
 
-## Arduino UNO のセットアップ {: #arduino-setup}
+<h2 id="arduino-setup">Arduino UNO のセットアップ</h2>
 
 模型車両の制御には、Arduino UNO を利用する。この項では、セットアップ手順を示す。
 
