@@ -1,7 +1,10 @@
+from direction import Direction
+
+
 class MortarHandler:
 
     def __init__(self):
-        self.direction = 'Stop'
+        self.direction = Direction.STOP
 
     def judgeLine(self, leftBlock, rightBlock):
         """線の状態を識別する
@@ -10,10 +13,10 @@ class MortarHandler:
             rightBlock (int): 右ブロックエリア
         """
         if leftBlock > 0 and rightBlock > 0:
-            self.direction = 'Stop'
+            self.direction = Direction.STOP
         elif leftBlock > 0:
-            self.direction = 'Left'
+            self.direction = Direction.LEFT
         elif rightBlock > 0:
-            self.direction = 'Right'
+            self.direction = Direction.RIGHT
         else:
-            self.direction = 'Forward'
+            self.direction = Direction.FORWARD
