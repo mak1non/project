@@ -1,7 +1,7 @@
 from direction import Direction
 
 
-class MortarHandler:
+class Car:
 
     def __init__(self):
         self.direction = Direction.STOP
@@ -20,3 +20,9 @@ class MortarHandler:
             self.direction = Direction.RIGHT
         else:
             self.direction = Direction.FORWARD
+
+    # TODO
+    def run(self):
+        """実際にモーターを動作させる
+        """
+        print(self.direction)

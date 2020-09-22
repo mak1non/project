@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
 
 import sys
-import line
-import wheel
+from car import Car
+from line import Line
 
 
 def main():
     # 取得
-    cam = line.LineHandler()
+    line = Line()
 
     # カメラ取得チェック
-    if cam.camera.isOpened() is False:
+    if line.camera.isOpened() is False:
         print("Can't open camera.")
         sys.exit()
 
     # モーター操作
-    car = wheel.MortarHandler()
+    car = Car()
 
+    # Ctrl + C で終了時にカメラを開放する
     try:
         while True:
             msg, detLB, detRB = line.detectLine()
@@ -27,14 +28,14 @@ def main():
 
                 # 線の判定
                 car.judgeLine(detLB, detRB)
-                print(car.direction)
+                car.run()
             else:
                 # エラー表示
                 print('エラー: ' + msg)
                 break
 
     except KeyboardInterrupt:
-        cam.dispose()
+        line.releaseCam()
 
 
 if __name__ == '__main__':

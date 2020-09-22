@@ -17,12 +17,13 @@ rightXArea = (400, 410)
 rightYArea = (0, trimH)
 
 
-class LineHandler:
+class Line:
 
     def __init__(self):
         # カメラ取得
         self.camera = cv2.VideoCapture(0)
 
+    # TODO: 余裕があれば表示部分は切り出したいね
     def detectLine(self):
         """線を認識する
 
@@ -80,7 +81,7 @@ class LineHandler:
 
         return msg, detLB, detRB
 
-    def dispose(self):
+    def releaseCam(self):
         """カメラを閉じる
         """
         self.camera.release()
