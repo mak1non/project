@@ -79,6 +79,12 @@ class Line:
 
         return msg
 
+    def printDetect(self):
+        """カメラの認識値を表示する (テスト用)
+        """
+        print("detLB : " + str(self.detLB) +
+              " detRB: " + str(self.detRB))
+
     def releaseCam(self):
         """カメラを閉じる
         """

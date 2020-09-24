@@ -22,9 +22,7 @@ def main():
             msg = line.detectLine()
 
             if msg == '':
-                # 数値の表示
-                print("detLB : " + str(line.detLB) +
-                      " detRB: " + str(line.detRB))
+                line.printDetect()
 
                 # 線の判定
                 car.judgeLine(line.detLB, line.detRB)
