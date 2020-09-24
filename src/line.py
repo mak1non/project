@@ -22,6 +22,8 @@ class Line:
     def __init__(self):
         # カメラ取得
         self.camera = cv2.VideoCapture(0)
+        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
     # TODO: 余裕があれば表示部分は切り出したいね
     def detectLine(self):
