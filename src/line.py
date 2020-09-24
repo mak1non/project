@@ -5,11 +5,11 @@ threshold = 64
 maxVal = 255
 
 # トリミングサイズ
-trimY = 180
-trimH = 30
+trimY = 180  # 縦座標
+trimH = 30   # 高さ
 
 # 左ブロックエリア設定
-leftXArea = (200, 210)
+leftXArea = (200, 210)  # 始点, 終点
 leftYArea = (0, trimH)
 
 # 右ブロックエリア設定
@@ -73,6 +73,7 @@ class Line:
 
             # 画面に表示
             cv2.imshow('Camera', frame)
+            cv2.waitKey(1)  # これが無いと表示されない
         else:
             msg = "画像の2値化失敗"
             return msg

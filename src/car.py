@@ -7,7 +7,7 @@ class Car:
         self.direction = Direction.STOP
 
     def judgeLine(self, leftBlock, rightBlock):
-        """線の状態を識別する
+        """線に合わせて進行方向を変える
         Args:
             leftBlock (int): 左ブロックエリア
             rightBlock (int): 右ブロックエリア
