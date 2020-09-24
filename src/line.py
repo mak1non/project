@@ -29,8 +29,6 @@ class Line:
 
         Returns:
             str: エラー箇所
-            int: 左の白ピクセルカウント
-            int: 右の白ピクセルカウント
         """
         # エラー箇所
         msg = ''
@@ -42,7 +40,7 @@ class Line:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # グレースケール化
         else:
             msg = "画像取得失敗"
-            return msg, None, None
+            return msg
 
         # 画像の2値化
         ret, frame = cv2.threshold(
@@ -69,17 +67,17 @@ class Line:
                                rightXArea[0]: rightXArea[1]]
 
             # 左ブロックエリアの白ピクセルカウント
-            detLB = cv2.countNonZero(leftBlock)
+            self.detLB = cv2.countNonZero(leftBlock)
             # 右ブロックエリアの白ピクセルカウント
-            detRB = cv2.countNonZero(rightBlock)
+            self.detRB = cv2.countNonZero(rightBlock)
 
             # 画面に表示
             cv2.imshow('Camera', frame)
         else:
             msg = "画像の2値化失敗"
-            return msg, None, None
+            return msg
 
-        return msg, detLB, detRB
+        return msg
 
     def releaseCam(self):
         """カメラを閉じる

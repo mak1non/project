@@ -17,23 +17,24 @@ def main():
     # モーター操作
     car = Car()
 
-    # Ctrl + C で終了時にカメラを開放する
     try:
         while True:
-            msg, detLB, detRB = line.detectLine()
+            msg = line.detectLine()
 
             if msg == '':
                 # 数値の表示
-                print("detLB : " + str(detLB) + " detRB: " + str(detRB))
+                print("detLB : " + str(line.detLB) +
+                      " detRB: " + str(line.detRB))
 
                 # 線の判定
-                car.judgeLine(detLB, detRB)
+                car.judgeLine(line.detLB, line.detRB)
                 car.run()
             else:
                 # エラー表示
                 print('エラー: ' + msg)
                 break
 
+    # Ctrl + C で終了時にカメラを開放する
     except KeyboardInterrupt:
         line.releaseCam()
 
