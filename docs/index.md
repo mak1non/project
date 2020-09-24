@@ -45,7 +45,7 @@ Python のプログラムを `scp` コマンドや USB メモリでコピーし�
 $ git clone --depth 1 https://github.com/mak1non/project.git
 ```
 
-また、GitHub 上のコードに変更があった場合は、コードの存在するリポジトリに移動した上で、以下のコマンドを実行する事で更新が出来る。
+また、GitHub 上のコードに変更があった場合は、コードの存在するディレクトリに移動した上で、以下のコマンドを実行する事で更新が出来る。
 
 ```
 $ git pull origin master
