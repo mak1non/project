@@ -3,9 +3,15 @@
 import sys
 from car import Car
 from line import Line
+from state import State
 
 
 def main():
+    print("""
+=== 操作方法 ===
+[q]: 終了
+""")
+
     # 取得
     line = Line()
 
@@ -18,19 +24,20 @@ def main():
     car = Car()
 
     try:
-        while True:
-            msg = line.detectLine()
+        while line.state is State.NORMAL:
+            # 線の認識
+            line.detectLine()
+            line.showImg()
+            line.printDetect()
 
-            if msg == '':
-                line.printDetect()
+            # 判定
+            car.judgeLine(line.detLB, line.detRB)
+            car.run()
 
-                # 線の判定
-                car.judgeLine(line.detLB, line.detRB)
-                car.run()
-            else:
-                # エラー表示
-                print('エラー: ' + msg)
-                break
+        if line.state is State.ERROR:
+            print('エラー: ' + line.error)
+        elif line.state is State.EXIT:
+            print('終了')
 
     # Ctrl + C 押下時にメッセージを表示
     except KeyboardInterrupt:
