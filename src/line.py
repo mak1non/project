@@ -24,11 +24,18 @@ class Line:
     def __init__(self):
         # 状態
         self.state = State.NORMAL
+        self.error = ''
 
         # カメラ取得
         self.camera = cv2.VideoCapture(0)
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+        # 初期化
+        self.origImg = None
+        self.binaryImg = None
+        self.detLB = 0
+        self.detRB = 0
 
     def detectLine(self):
         """線を認識する
@@ -65,6 +72,13 @@ class Line:
             self.error = '画像の2値化失敗'
 
     def showImg(self):
+        """画像の表示
+        """
+        # showImg() より前に呼ばれたらエラーを表示する
+        if self.origImg is None or self.binaryImg is None:
+            print('エラー: 画像が撮影されていません')
+            return
+
         # 左ブロックエリア描画
         cv2.rectangle(self.binaryImg,
                       (leftXArea[0], leftYArea[0]),
