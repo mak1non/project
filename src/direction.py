@@ -2,8 +2,8 @@ from enum import Enum, auto
 
 
 class Direction(Enum):
-    STOP = auto()
-    FORWARD = auto()
     BACKWARD = auto()
+    FORWARD = auto()
     LEFT = auto()
     RIGHT = auto()
+    STOP = auto()
