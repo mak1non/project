@@ -34,7 +34,7 @@ Windows では、Rufus のようなソフトウェアを使用して書き込む
 ```
 # apt update
 # apt upgrade
-# apt install python3 python3-opencv
+pda# apt install expect python3 python3-opencv
 ```
 
 ### コードの準備
