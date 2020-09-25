@@ -12,7 +12,7 @@ def main():
     # カメラ取得チェック
     if line.camera.isOpened() is False:
         print("Can't open camera.")
-        sys.exit()
+        sys.exit(1)
 
     # モーター操作
     car = Car()
