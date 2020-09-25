@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 from car import Car
 from line import Line
@@ -7,9 +8,13 @@ from state import State
 
 
 def main():
+    # 画像保存ディレクトリ作成
+    os.makedirs('pictures/', mode=0o755, exist_ok=True)
+
     print("""
 === 操作方法 ===
-[q]: 終了
+[S]: 画像保存
+[Q]: 終了
 """)
 
     # 取得
@@ -28,7 +33,6 @@ def main():
             # 線の認識
             line.detectLine()
             line.showImg()
-            line.printDetect()
 
             # 判定
             car.judgeLine(line.detLB, line.detRB)

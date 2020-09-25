@@ -1,4 +1,5 @@
 import cv2
+import datetime
 from state import State
 
 # 二値化の閾値
@@ -29,42 +30,22 @@ class Line:
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-    def showImg(self):
-        # 左ブロックエリア描画
-        cv2.rectangle(self.binaryImg,
-                      (leftXArea[0], leftYArea[0]),
-                      (leftXArea[1], leftYArea[1]),
-                      (0, 0, 255),
-                      1)
-        # 右ブロックエリア描画
-        cv2.rectangle(self.binaryImg,
-                      (rightXArea[0], rightYArea[0]),
-                      (rightXArea[1], rightYArea[1]),
-                      (0, 0, 255),
-                      1)
-
-        # 画面に表示
-        cv2.imshow('Sensor', self.binaryImg)
-
-        # 1000ms / 30fps (Camera) = 33.3(...)
-        if cv2.waitKey(33) & 0xFF is ord('q'):
-            self.state = State.EXIT
-
     def detectLine(self):
         """線を認識する
         """
 
         # 画像を取得
-        ret, frame = self.camera.read()
+        grayImg = None  # グレースケール画像
+        ret, self.origImg = self.camera.read()
         if ret is True:
-            frame = frame[trimY:trimY + trimH, ]  # 画像をトリミング
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # グレースケール化
+            grayImg = self.origImg[trimY:trimY + trimH, ]  # 画像をトリミング
+            grayImg = cv2.cvtColor(grayImg, cv2.COLOR_BGR2GRAY)  # グレースケール化
         else:
             self.error = "画像取得失敗"
 
         # 画像の2値化
         ret, self.binaryImg = cv2.threshold(
-            frame, threshold, maxVal, cv2.THRESH_BINARY_INV)
+            grayImg, threshold, maxVal, cv2.THRESH_BINARY_INV)
         if ret:
             # 左ブロックエリアのフレームをセット
             leftBlock = self.binaryImg[leftYArea[0]:leftYArea[1],
@@ -80,6 +61,37 @@ class Line:
 
         else:
             self.error = "画像の2値化失敗"
+
+    def showImg(self):
+        # 左ブロックエリア描画
+        cv2.rectangle(self.binaryImg,
+                      (leftXArea[0], leftYArea[0]),
+                      (leftXArea[1], leftYArea[1]),
+                      (0, 0, 255),
+                      1)
+        # 右ブロックエリア描画
+        cv2.rectangle(self.binaryImg,
+                      (rightXArea[0], rightYArea[0]),
+                      (rightXArea[1], rightYArea[1]),
+                      (0, 0, 255),
+                      1)
+
+        # 画面に表示
+        cv2.imshow('Camera', self.origImg)
+        cv2.imshow('Sensor', self.binaryImg)
+
+        # 1000ms / 30fps (Camera) = 33.3(...)
+        key = cv2.waitKey(33) & 0xFF
+
+        if key is ord('s') or key is ord('S'):
+            now = datetime.datetime.now()
+            cv2.imwrite(
+                'pictures/' +
+                now.strftime("%Y-%m-%dT%H_%M_%S") +
+                '.jpg',
+                self.origImg)
+        elif key is ord('q') or key is ord('Q'):
+            self.state = State.EXIT
 
     def printDetect(self):
         """カメラの認識値を表示する (テスト用)
