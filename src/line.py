@@ -37,15 +37,16 @@ class Line:
         # 画像を取得
         ret, self.origImg = self.camera.read()
         if ret is True:
-            self.trimImg = self.origImg[trimY:trimY + trimH, ]  # 画像をトリミング
-            self.grayImg = cv2.cvtColor(
-                self.trimImg, cv2.COLOR_BGR2GRAY)  # グレースケール化
+            trimImg = self.origImg[trimY:trimY + trimH, ]  # 画像をトリミング
+            grayImg = cv2.cvtColor(
+                trimImg, cv2.COLOR_BGR2GRAY)  # グレースケール化
         else:
-            self.error = "画像取得失敗"
+            self.state = State.ERROR
+            self.error = '画像取得失敗'
 
         # 画像の2値化
         ret, self.binaryImg = cv2.threshold(
-            self.grayImg, threshold, maxVal, cv2.THRESH_BINARY_INV)
+            grayImg, threshold, maxVal, cv2.THRESH_BINARY_INV)
         if ret:
             # 左ブロックエリアのフレームをセット
             leftBlock = self.binaryImg[leftYArea[0]:leftYArea[1],
@@ -60,7 +61,8 @@ class Line:
             self.detRB = cv2.countNonZero(rightBlock)
 
         else:
-            self.error = "画像の2値化失敗"
+            self.state = State.ERROR
+            self.error = '画像の2値化失敗'
 
     def showImg(self):
         # 左ブロックエリア描画
@@ -87,8 +89,6 @@ class Line:
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%dT%H_%M_%S")
             cv2.imwrite('pictures/' + time + '_orig.jpg', self.origImg)
-            cv2.imwrite('pictures/' + time + '_trim.jpg', self.trimImg)
-            cv2.imwrite('pictures/' + time + '_gray.jpg', self.grayImg)
             cv2.imwrite('pictures/' + time + '_binary.jpg', self.binaryImg)
         elif key is ord('q') or key is ord('Q'):
             self.state = State.EXIT
