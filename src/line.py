@@ -5,7 +5,6 @@ from state import State
 
 
 class Line:
-
     def __init__(self):
         # 設定ファイル
         self.cfg = Config()
@@ -66,7 +65,6 @@ class Line:
             self.detLB = cv2.countNonZero(leftBlock)
             # 右ブロックエリアの白ピクセルカウント
             self.detRB = cv2.countNonZero(rightBlock)
-
         else:
             self.state = State.ERROR
             self.error = '画像の2値化失敗'
@@ -104,11 +102,13 @@ class Line:
         key = cv2.waitKey(33) & 0xFF
 
         if key is ord('s') or key is ord('S'):
+            # 撮影
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%dT%H_%M_%S")
             cv2.imwrite('pictures/' + time + '_orig.jpg', self.origImg)
             cv2.imwrite('pictures/' + time + '_binary.jpg', self.binaryImg)
         elif key is ord('q') or key is ord('Q'):
+            # 終了
             self.state = State.EXIT
 
     def printDetect(self):

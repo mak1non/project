@@ -2,7 +2,6 @@ from direction import Direction
 
 
 class Car:
-
     def __init__(self):
         self.direction = Direction.STOP
 
