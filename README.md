@@ -4,6 +4,9 @@
 
 ## 内容説明
 
--   `docs/`: 説明書
--   `src/`: ソースコード
--   `requirements.txt`: `pip install -r requirements.txt` 等で使用 (開発用)
+-   `docs/` : 説明書
+-   `src/` : ソースコード
+-   `LICENSE` : ライセンス
+-   `README.md` : これ
+-   `requirements.txt` : `pip install -r requirements.txt` 等で使用 (開発用)
+-   `run.sh` : 実行用スクリプト
