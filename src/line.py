@@ -1,5 +1,6 @@
 import cv2
 import datetime
+from config import Config
 from state import State
 
 # 二値化の閾値
@@ -22,6 +23,9 @@ rightYArea = (0, trimH)
 class Line:
 
     def __init__(self):
+        # 設定ファイル
+        self.cfg = Config()
+
         # 状態
         self.state = State.NORMAL
         self.error = ''
