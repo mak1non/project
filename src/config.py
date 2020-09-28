@@ -18,7 +18,7 @@ class Config:
         else:
             self._readConfig(config_ini)
 
-    def _writeDefault(self):
+    def __writeDefault(self):
         """デフォルト設定の書き込み
         """
         config = configparser.SafeConfigParser()
@@ -46,7 +46,12 @@ class Config:
 
         self._readConfig(config)
 
-    def _readConfig(self, config):
+    def __readConfig(self, config):
+        """設定の読み込み
+
+        Args:
+            config (SafeConfigParser): 設定オブジェクト
+        """
         # 2値化の設定
         cfg = config['binary']
         self.threshold = cfg.get('threshold')
