@@ -14,9 +14,9 @@ class Config:
         # 設定ファイル未存在時の処理
         if config_test.get('test') is None:
             print('注意: 設定ファイルが存在しません。新規作成します。')
-            self._writeDefault()
+            self.__writeDefault()
         else:
-            self._readConfig(config_ini)
+            self.__readConfig(config_ini)
 
     def __writeDefault(self):
         """デフォルト設定の書き込み
@@ -44,7 +44,7 @@ class Config:
         with open('config.ini', 'w') as file:
             config.write(file)
 
-        self._readConfig(config)
+        self.__readConfig(config)
 
     def __readConfig(self, config):
         """設定の読み込み
