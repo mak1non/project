@@ -3,13 +3,13 @@
 ## ソフトウェア
 
 -   Windows 10
-    -   Arduino IDE 1.8.13
-    -   Visual Studio Code 1.49.1
+    -   Arduino IDE 1.8
+    -   Visual Studio Code 1.49
     -   Ubuntu 20.04 (WSL2)
         -   Python 3.8.2
 -   Raspberry Pi OS 10 (Buster)
-    -   Python 3.7.3
-    -   OpenCV 3.2.0
+    -   Python 3.7
+    -   OpenCV 3.2
 
 ## ハードウェア
 
