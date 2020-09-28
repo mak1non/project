@@ -24,21 +24,29 @@ class Config:
         config = configparser.SafeConfigParser()
 
         # テスト用
-        config['DEFAULT'] = {'test': True}
+        config['DEFAULT'] = {
+            'test': True
+        }
 
         # 2値化の設定
-        config['binary'] = {'threshold': 64,
-                            'maxValue': 255}
+        config['binary'] = {
+            'threshold': 64,
+            'maxValue': 255
+        }
 
         # トリミングサイズ
-        config['trim'] = {'y_coordinate': 180,
-                          'height': 30}
+        config['trim'] = {
+            'y_coordinate': 180,
+            'height': 30
+        }
 
         # 左右ブロックエリア
-        config['area'] = {'L_start': 200,
-                          'L_end': 210,
-                          'R_start': 400,
-                          'R_end': 410}
+        config['area'] = {
+            'L_start': 200,
+            'L_end': 210,
+            'R_start': 400,
+            'R_end': 410
+        }
 
         # 設定の書き込み
         with open('config.ini', 'w') as file:
