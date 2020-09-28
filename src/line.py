@@ -28,7 +28,6 @@ class Line:
     def detectLine(self):
         """線を認識する
         """
-
         # 画像を取得
         ret, self.origImg = self.camera.read()
         if ret is True:
