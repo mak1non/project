@@ -101,10 +101,13 @@ class Line:
         # 1000ms / 30fps (Camera) = 33.3(...)
         key = cv2.waitKey(33) & 0xFF
 
+        # キーの判別
         if key is ord('s') or key is ord('S'):
-            # 撮影
+            # 時間の取得
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%dT%H_%M_%S")
+
+            # 写真の撮影
             cv2.imwrite('pictures/' + time + '_orig.jpg', self.origImg)
             cv2.imwrite('pictures/' + time + '_binary.jpg', self.binaryImg)
         elif key is ord('q') or key is ord('Q'):
