@@ -62,8 +62,11 @@ void toForward() {
  * 止まる
  */
 void stopHere() {
+    // 移動中のみ止まる
     if (carState) {
         carState = false;
+
+        // じわじわ止めていく
         for (int i = 255; i > 0; --i) {
             analogWrite(leftOut, i);
             analogWrite(rightOut, i);
