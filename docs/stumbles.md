@@ -34,4 +34,10 @@ OpenCV と web カメラの相性が悪いのか、`Corrupt JPEG data:` から�
 unbuffer python3 src/main.py |& grep --line-buffered -v "Corrupt JPEG data:"
 ```
 
+このスクリプトを実行するためには、`expect` というパッケージが必要になる。
+
+```
+# apt install expect
+```
+
 -   出典: [python - OpenCV error on Raspbian: Corrupt jpeg data: 1 extraneous bytes before marker 0xd6 - Stack Overflow](https://stackoverflow.com/questions/42931346/)
