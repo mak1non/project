@@ -5,6 +5,8 @@
 1. [Raspberry Pi のセットアップ](#raspi-setup)
 2. [Arduino UNO のセットアップ](#arduino-setup)
 
+注: コマンド例の中の `$` は通常ユーザーで実行するコマンド、`#` は特権ユーザーで実行するコマンドを示す。大抵の場合、`sudo` 等を用いる事で特権ユーザーとしての実行が可能。
+
 ---
 
 <h2 id="raspi-setup">Raspberry Pi のセットアップ</h2>
@@ -15,9 +17,16 @@
 
 Raspberry Pi 4 Model B を動作させるため、[Raspberry Pi OS](https://www.raspberrypi.org/downloads/) が必要になる。汎用性のために、web ページから OS イメージを直接入手することを強く推奨する。GNU/Linux では `dd` のようなプログラムで OS イメージを書き込むことが出来るが、Windows 環境では、[Rufus](https://rufus.ie/) のようなイメージを書き込むソフトウェアも用意する必要がある。
 
-![](img/raspios.png)
+![](img/get-raspbian-1.png)
+![](img/get-raspbian-2.png)
 
 ### SD カードへの OS の書き込み
+
+GNU/Linuxでは、以下のコマンドで書き込みをする事ができる。
+
+```
+# dd bs=1M if=<Raspberry Pi OS のイメージファイル> of=<SDカード (例: /dev/sdb)>
+```
 
 Windows では、Rufus のようなソフトウェアを使用して書き込む。Rufus を起動し、SD カードを選択後、ウィンドウ内にイメージファイルをドラック & ドロップし、\"スタート\"をクリックする。 Rufus 以外のソフトウェアを使用する場合は、各ソフトウェアのドキュメントを参照すること。
 
@@ -27,9 +36,11 @@ Windows では、Rufus のようなソフトウェアを使用して書き込む
 
 画面上の指示に従い、OS をセットアップする。
 
-![](img/raspi-setup.jpg)
+![](img/raspi-setup-1.jpg)
 
 セットアップ後、端末エミュレータを開き、以下のコマンドを入力して、実行環境の準備を行う。
+
+![](img/raspi-setup-2.jpg)
 
 ```
 # apt update
