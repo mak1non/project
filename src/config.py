@@ -2,7 +2,6 @@ import configparser
 
 
 class Config:
-
     def __init__(self):
         # 設定ファイルの読み込み
         config_ini = configparser.SafeConfigParser()
