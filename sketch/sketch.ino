@@ -53,9 +53,9 @@ void loop() {
     } else if (digitalRead(fwdBtn) == LOW) {
         toForward();
     } else if (digitalRead(leftBtn) == LOW) {
-        makeTurn(leftOut);
+        makeTurn();
     } else if (digitalRead(rightBtn) == LOW) {
-        makeTurn(rightOut);
+        makeTurn();
     }
 }
 
@@ -86,5 +86,5 @@ void toForward() {
 /*
  * 曲がる
  */
-void makeTurn(int pin) {
+void makeTurn() {
 }
