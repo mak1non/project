@@ -21,6 +21,10 @@ const int leftOut2 = 6;  // 入力2
 const int rightOut1 = 9;   // 入力1
 const int rightOut2 = 10;  // 入力2
 
+// 走行状態
+// 0: 無, 1: 前進, 2: ブレーキ
+const int carState = 0;
+
 void setup() {
     // 入力ピンの準備
     pinMode(stopBtn, INPUT_PULLUP);
@@ -65,6 +69,18 @@ void stopHere() {
  * 前に進む
  */
 void toForward() {
+    // 前進状態以外でのみ実行
+    if (carState != 1) {
+        // 前進状態にする
+        carState = 1;
+
+        // 少しずつ強くする
+        for (int i = 0; i < 255; i++) {
+            delay(5);
+            analogWrite(leftOut1, i);
+            analogWrite(rightOut1, i);
+        }
+    }
 }
 
 /*
