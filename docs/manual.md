@@ -53,7 +53,7 @@ Windows では、Rufus のようなソフトウェアを使用して書き込む
 Python のプログラムを `scp` コマンドや USB メモリでコピーして、Raspberry Pi 上から実行できるようにする。もしくは、下記のコマンドで GitHub 上のリポジトリからデータを取得しても良い (あらかじめ `git` をインストールしておく必要がある)。
 
 ```
-$ git clone --depth 1 https://github.com/mak1non/project.git
+$ git clone https://github.com/mak1non/project.git
 ```
 
 また、GitHub 上のコードに変更があった場合は、コードの存在するディレクトリに移動した上で、以下のコマンドを実行する事で更新が出来る。
