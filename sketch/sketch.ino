@@ -43,10 +43,7 @@ void setup() {
     pinMode(rightOut2, OUTPUT);
 
     // 初期化
-    digitalWrite(leftOut1, LOW);
-    digitalWrite(leftOut2, LOW);
-    digitalWrite(rightOut1, LOW);
-    digitalWrite(rightOut2, LOW);
+    neutral();
 }
 
 void loop() {
@@ -60,6 +57,17 @@ void loop() {
     } else if (digitalRead(rightBtn) == LOW) {
         makeTurn(rightOut2);
     }
+}
+
+/*
+ * ニュートラル
+ */
+void neutral() {
+    carState = 0;
+    digitalWrite(leftOut1, LOW);
+    digitalWrite(leftOut2, LOW);
+    digitalWrite(rightOut1, LOW);
+    digitalWrite(rightOut2, LOW);
 }
 
 /*
