@@ -60,9 +60,13 @@ void loop() {
 }
 
 /*
- * 止まる
+ * 止まる (TODO)
  */
 void stopHere() {
+    digitalWrite(leftOut1, HIGH);
+    digitalWrite(leftOut2, HIGH);
+    digitalWrite(rightOut1, HIGH);
+    digitalWrite(rightOut2, HIGH);
 }
 
 /*
@@ -84,7 +88,16 @@ void toForward() {
 }
 
 /*
- * 曲がる
+ * 曲がる (TODO)
+ * 
+ * pin: 曲がる方向の入力2
  */
-void makeTurn() {
+void makeTurn(int pin) {
+    // 前進状態でのみ実行
+    if (carState = 1) {
+        // 曲がる方向のモーターにブレーキをかける
+        digitalWrite(pin, HIGH)
+        delay(100)  // 要調整
+        digitalWrite(pin, LOW)
+    }
 }
