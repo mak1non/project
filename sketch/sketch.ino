@@ -63,6 +63,10 @@ void loop() {
  * 止まる (TODO)
  */
 void stopHere() {
+    // 状態の更新
+    carState = 2;
+
+    // ブレーキをかける
     digitalWrite(leftOut1, HIGH);
     digitalWrite(leftOut2, HIGH);
     digitalWrite(rightOut1, HIGH);
