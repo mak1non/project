@@ -2,6 +2,7 @@
  * 模型車両制御用プログラム
  * 
  * https://github.com/mak1non/project
+ * https://mak1non.github.io/project/mortar.html
  */
 
 // ボタンのピン番号
@@ -11,13 +12,14 @@ const int backBtn = 2;   // 後退スイッチ
 const int leftBtn = 3;   // 左折スイッチ
 const int rightBtn = 4;  // 右折スイッチ
 
-// モーターのピン番号
-const int leftOut = 9;    // 左モーター
-const int rightOut = 11;  // 右モーター
+// モータードライバー (TA7291P) のピン番号
+// 左モーター
+const int leftOut1 = 5;  // 入力1
+const int leftOut2 = 6;  // 入力2
 
-// 走行状態
-// 0: 停止, 1: 前進, 2: 後退, 3: 左折, 4: 右折
-int carState = 0;
+// 右モーター
+const int rightOut1 = 9;   // 入力1
+const int rightOut2 = 10;  // 入力2
 
 void setup() {
     // 入力ピンの準備
@@ -28,12 +30,16 @@ void setup() {
     pinMode(rightBtn, INPUT_PULLUP);
   
     // 出力ピンの準備
-    pinMode(leftOut, OUTPUT);
-    pinMode(rightOut, OUTPUT);
+    pinMode(leftOut1, OUTPUT);
+    pinMode(leftOut2, OUTPUT);
+    pinMode(rightOut1, OUTPUT);
+    pinMode(rightOut2, OUTPUT);
 
     // 初期化
-    digitalWrite(leftOut, LOW);
-    digitalWrite(rightOut, LOW);
+    digitalWrite(leftOut1, LOW);
+    digitalWrite(leftOut2, LOW);
+    digitalWrite(rightOut1, LOW);
+    digitalWrite(rightOut2, LOW);
 }
 
 void loop() {
@@ -53,40 +59,16 @@ void loop() {
  * 止まる
  */
 void stopHere() {
-    // 移動中のみ止まる
-    if (carState == 1) {
-        // じわじわ止めていく
-        for (int i = 255; i > 0; i--) {
-            delay(5);
-            analogWrite(leftOut, i);
-            analogWrite(rightOut, i);
-        }
-        carState = 0;
-    }
 }
 
 /*
  * 前に進む
  */
 void toForward() {
-    if (carState == 0) {
-        // じわじわ進めていく
-        for (int i = 0; i < 255; i++) {
-            delay(5);
-            analogWrite(leftOut, i);
-            analogWrite(rightOut, i);
-        }
-        carState = 1;
-    }
 }
 
 /*
  * 曲がる
  */
 void makeTurn(int pin) {
-    if (carState == 1) {
-        digitalWrite(pin, LOW);
-        delay(1000);
-        digitalWrite(pin, HIGH);
-    }
 }
