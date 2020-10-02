@@ -1,6 +1,6 @@
 /*
  * 模型車両制御用プログラム
- * 
+ *
  * https://github.com/mak1non/project
  * https://mak1non.github.io/project/mortar.html
  */
@@ -32,7 +32,7 @@ void setup() {
     pinMode(backBtn, INPUT_PULLUP);
     pinMode(leftBtn, INPUT_PULLUP);
     pinMode(rightBtn, INPUT_PULLUP);
-  
+
     // 出力ピンの準備
     pinMode(leftOut1, OUTPUT);
     pinMode(leftOut2, OUTPUT);
@@ -53,9 +53,9 @@ void loop() {
     } else if (digitalRead(fwdBtn) == LOW) {
         toForward();
     } else if (digitalRead(leftBtn) == LOW) {
-        makeTurn();
+        makeTurn(leftOut2);
     } else if (digitalRead(rightBtn) == LOW) {
-        makeTurn();
+        makeTurn(rightOut2);
     }
 }
 
@@ -89,15 +89,15 @@ void toForward() {
 
 /*
  * 曲がる (TODO)
- * 
+ *
  * pin: 曲がる方向の入力2
  */
 void makeTurn(int pin) {
     // 前進状態でのみ実行
     if (carState = 1) {
         // 曲がる方向のモーターにブレーキをかける
-        digitalWrite(pin, HIGH)
-        delay(100)  // 要調整
-        digitalWrite(pin, LOW)
+        digitalWrite(pin, HIGH);
+        delay(100);  // 要調整
+        digitalWrite(pin, LOW);
     }
 }
