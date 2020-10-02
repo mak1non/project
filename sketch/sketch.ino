@@ -23,7 +23,7 @@ const int rightOut2 = 10;  // 入力2
 
 // 走行状態
 // 0: 無, 1: 前進, 2: ブレーキ
-const int carState = 0;
+int carState = 0;
 
 void setup() {
     // 入力ピンの準備
