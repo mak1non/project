@@ -5,6 +5,9 @@
  * https://mak1non.github.io/project/mortar.html
  */
 
+// 最高出力
+const int maxOut = 255;
+
 // ボタンのピン番号
 const int stopBtn = 0;   // 停止スイッチ
 const int fwdBtn = 1;    // 前進スイッチ
@@ -83,7 +86,7 @@ void toForward() {
         carState = 1;
 
         // 少しずつ強くする
-        for (int i = 0; i < 255; i++) {
+        for (int i = 0; i < maxOut; i++) {
             delay(5);
             analogWrite(leftOut1, i);
             analogWrite(rightOut1, i);
