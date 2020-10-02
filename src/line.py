@@ -14,7 +14,7 @@ class Line:
         self.error = ''
 
         # カメラ取得
-        self.camera = cv2.VideoCapture(0)
+        self.camera = cv2.VideoCapture(self.cfg.cIndex)
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 

@@ -27,6 +27,11 @@ class Config:
             'test': True
         }
 
+        # カメラ番号
+        config['camera'] = {
+            'index': 0
+        }
+
         # 2値化の設定
         config['binary'] = {
             'threshold': 64,
@@ -59,17 +64,21 @@ class Config:
         Args:
             config (SafeConfigParser): 設定オブジェクト
         """
+        # カメラ番号
+        cfg = config['camera']
+        self.cIndex = int(cfg.get('index'))
+
         # 2値化の設定
         cfg = config['binary']
-        self.threshold = cfg.get('threshold')
-        self.maxValue = cfg.get('maxValue')
+        self.threshold = int(cfg.get('threshold'))
+        self.maxValue = int(cfg.get('maxValue'))
 
         # トリミングサイズ
         cfg = config['trim']
-        self.trimY = cfg.get('y_coordinate')
-        self.trimH = cfg.get('height')
+        self.trimY = int(cfg.get('y_coordinate'))
+        self.trimH = int(cfg.get('height'))
 
         # 左右ブロックエリア
         cfg = config['area']
-        self.leftArea = (cfg.get('L_start'), cfg.get('L_end'))
-        self.rightArea = (cfg.get('R_start'), cfg.get('R_end'))
+        self.leftArea = (int(cfg.get('L_start')), int(cfg.get('L_end')))
+        self.rightArea = (int(cfg.get('R_start')), int(cfg.get('R_end')))
