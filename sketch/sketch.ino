@@ -5,6 +5,14 @@
  * https://mak1non.github.io/project/mortar.html
  */
 
+enum state {
+    BACKWARD, FORWARD, NEUTRAL, STOP
+};
+
+enum direction {
+    LEFT, RIGHT
+};
+
 // 最高出力
 const int maxOut = 255;
 
@@ -25,8 +33,7 @@ const int rightOut1 = 9;   // 入力1
 const int rightOut2 = 10;  // 入力2
 
 // 走行状態
-// 0: 無, 1: 前進, 2: ブレーキ
-int carState = 0;
+state carState = NEUTRAL;
 
 void setup() {
     // 入力ピンの準備
@@ -53,9 +60,9 @@ void loop() {
     } else if (digitalRead(fwdBtn) == LOW) {
         toForward();
     } else if (digitalRead(leftBtn) == LOW) {
-        makeTurn(leftOut2);
+        makeTurn(LEFT);
     } else if (digitalRead(rightBtn) == LOW) {
-        makeTurn(rightOut2);
+        makeTurn(RIGHT);
     }
 }
 
@@ -63,7 +70,7 @@ void loop() {
  * ニュートラル
  */
 void neutral() {
-    carState = 0;
+    carState = NEUTRAL;
     digitalWrite(leftOut1, LOW);
     digitalWrite(leftOut2, LOW);
     digitalWrite(rightOut1, LOW);
@@ -75,7 +82,7 @@ void neutral() {
  */
 void stopHere() {
     // 状態の更新
-    carState = 2;
+    carState = STOP;
 
     // ブレーキをかける
     digitalWrite(leftOut1, HIGH);
@@ -89,9 +96,9 @@ void stopHere() {
  */
 void toForward() {
     // 前進状態以外でのみ実行
-    if (carState != 1) {
+    if (carState != FORWARD) {
         // 前進状態にする
-        carState = 1;
+        carState = FORWARD;
 
         // 少しずつ強くする
         for (int i = 0; i < maxOut; i++) {
@@ -105,14 +112,17 @@ void toForward() {
 /*
  * 曲がる (TODO)
  *
- * pin: 曲がる方向の入力2
+ * dir: 曲がる方向
  */
-void makeTurn(int pin) {
-    // 前進状態でのみ実行
-    if (carState = 1) {
-        // 曲がる方向のモーターにブレーキをかける
-        digitalWrite(pin, HIGH);
-        delay(100);  // 要調整
-        digitalWrite(pin, LOW);
+void makeTurn(direction dir) {
+    int pin;
+    if (dir == LEFT) {
+        pin = leftOut2;
+    } else {
+        pin = rightOut2;
     }
+
+    digitalWrite(pin, HIGH);
+    delay(100); // 要調整
+    digitalWrite(pin, LOW);
 }
