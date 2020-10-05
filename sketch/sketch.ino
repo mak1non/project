@@ -115,13 +115,17 @@ void toForward() {
  * dir: 曲がる方向
  */
 void makeTurn(direction dir) {
+    // 止めるピン番号
     int pin;
+
+    // 左右の識別
     if (dir == LEFT) {
         pin = leftOut2;
     } else {
         pin = rightOut2;
     }
 
+    // ブレーキ動作
     digitalWrite(pin, HIGH);
     delay(100); // 要調整
     digitalWrite(pin, LOW);
