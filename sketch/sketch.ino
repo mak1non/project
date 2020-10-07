@@ -33,7 +33,7 @@ const int rightOut1 = 9;   // 入力1
 const int rightOut2 = 10;  // 入力2
 
 // 走行状態
-state carState = NEUTRAL;
+state carState;
 
 void setup() {
     // 入力ピンの準備
