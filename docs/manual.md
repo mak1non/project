@@ -75,6 +75,32 @@ $ git pull origin master
 ![](img/get-arduino.png)
 ![](img/get-arduino-ms.png)
 
+GNU/Linux の場合、ダウンロードしたファイルを以下の手順で展開し、インストールする必要がある。
+
+```
+$ cd <ファイルの場所>
+$ tar xvf arduino-<バージョン番号>-linux64.tar.xz
+$ cd arduino-<バージョン番号>
+# ./install.sh
+# ./arduino-linux-setup.sh <ユーザー名>
+```
+
+最後の `arduino-linux-setup.sh` 内での設定を反映させるため、一度 PC を再起動する必要がある。
+
 ### プログラムの書き込み
 
-執筆中
+まず、スケッチを読み込む。
+
+![](img/arduino-write-1.png)
+
+次に `Tools` タブから、書き込み先の Arduino UNO に合わせた書き込み設定をする。
+
+| 項目名     | 内容                        |
+| ---------- | --------------------------- |
+| Board      | Arduino Uno                 |
+| Port       | /dev/<接続先> (Arduino Uno) |
+| Programmer | AVRISP mkII                 |
+
+設定した後、1度 `Sketch -> Verify/Compile` を実行し、プログラムの構文が問題無い事を確認する。確認後、`Sketch -> Upload` でArduino UNO へプログラムを書き込む。
+
+![](img/arduino-write-2.png)
