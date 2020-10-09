@@ -11,11 +11,13 @@ def main():
     # 画像保存ディレクトリ作成
     os.makedirs('pictures/', mode=0o755, exist_ok=True)
 
-    print("""
+    print(
+"""
 === 操作方法 ===
 [S]: 画像保存
 [Q]: 終了
-""")
+"""
+    )
 
     # 取得
     line = Line()
