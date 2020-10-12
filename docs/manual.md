@@ -4,6 +4,8 @@
 
 1. [Raspberry Pi のセットアップ](#raspi-setup)
 2. [Arduino UNO のセットアップ](#arduino-setup)
+3. [配線](#cabling)
+4. [車両の組み立て](#assembly)
 
 注: コマンド例の中の `$` は通常ユーザーで実行するコマンド、`#` は特権ユーザーで実行するコマンドを示す。大抵の場合、`sudo` 等を用いる事で特権ユーザーとしての実行が可能。
 
@@ -104,3 +106,15 @@ $ cd arduino-<バージョン番号>
 設定した後、1度 `Sketch -> Verify/Compile` を実行し、プログラムの構文が問題無い事を確認する。確認後、`Sketch -> Upload` でArduino UNO へプログラムを書き込む。
 
 ![](img/arduino-write-2.png)
+
+---
+
+<h2 id="cabling">配線</h2>
+
+製作中
+
+---
+
+<h2 id="assembly">車両の組み立て</h2>
+
+製作中
