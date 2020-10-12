@@ -97,6 +97,8 @@ void stopHere() {
 void toForward() {
     // 前進状態以外でのみ実行
     if (carState != FORWARD) {
+        neutral();
+
         // 前進状態にする
         carState = FORWARD;
 
