@@ -5,23 +5,15 @@
  * https://mak1non.github.io/project/mortar.html
  */
 
-enum state {
-    BACKWARD, FORWARD, NEUTRAL, STOP
-};
+enum state { BACKWARD, FORWARD, NEUTRAL, STOP };
 
-enum direction {
-    LEFT, RIGHT
-};
+enum direction { LEFT, RIGHT };
 
 // 最高出力
 const int maxOut = 255;
 
 // ボタンのピン番号
-const int stopBtn = 0;   // 停止スイッチ
-const int fwdBtn = 1;    // 前進スイッチ
-const int backBtn = 2;   // 後退スイッチ
-const int leftBtn = 3;   // 左折スイッチ
-const int rightBtn = 4;  // 右折スイッチ
+const int btn = 0;  // 停止スイッチ
 
 // モータードライバー (TA7291P) のピン番号
 // 左モーター
@@ -37,11 +29,7 @@ state carState;
 
 void setup() {
     // 入力ピンの準備
-    pinMode(stopBtn, INPUT);
-    pinMode(fwdBtn, INPUT);
-    pinMode(backBtn, INPUT);
-    pinMode(leftBtn, INPUT);
-    pinMode(rightBtn, INPUT);
+    pinMode(btn, INPUT_PULLUP);
 
     // 出力ピンの準備
     pinMode(leftOut1, OUTPUT);
@@ -55,14 +43,10 @@ void setup() {
 
 void loop() {
     // ボタン状態の読み取り
-    if (digitalRead(stopBtn) == HIGH) {
-        stopHere();
-    } else if (digitalRead(fwdBtn) == HIGH) {
+    if (digitalRead(stopBtn) == LOW) {
         toForward();
-    } else if (digitalRead(leftBtn) == HIGH) {
-        makeTurn(LEFT);
-    } else if (digitalRead(rightBtn) == HIGH) {
-        makeTurn(RIGHT);
+    } else {
+        stopHere();
     }
 }
 
@@ -81,21 +65,23 @@ void neutral() {
  * 止まる (TODO)
  */
 void stopHere() {
-    // 状態の更新
-    carState = STOP;
+    if (carState == FORWARD) {
+        // 状態の更新
+        carState = STOP;
 
-    // 少しずつ弱くする
-    for (int i = maxOut; i > 0; i--) {
-        delay(5);
-        analogWrite(leftOut1, i);
-        analogWrite(rightOut1, i);
+        // 少しずつ弱くする
+        for (int i = maxOut; i > 0; i--) {
+            delay(5);
+            analogWrite(leftOut1, i);
+            analogWrite(rightOut1, i);
+        }
+
+        // ブレーキをかける
+        digitalWrite(leftOut1, HIGH);
+        digitalWrite(leftOut2, HIGH);
+        digitalWrite(rightOut1, HIGH);
+        digitalWrite(rightOut2, HIGH);
     }
-
-    // ブレーキをかける
-    digitalWrite(leftOut1, HIGH);
-    digitalWrite(leftOut2, HIGH);
-    digitalWrite(rightOut1, HIGH);
-    digitalWrite(rightOut2, HIGH);
 }
 
 /*
@@ -136,6 +122,6 @@ void makeTurn(direction dir) {
 
     // ブレーキ動作
     digitalWrite(pin, HIGH);
-    delay(100); // 要調整
+    delay(100);  // 要調整
     digitalWrite(pin, LOW);
 }
