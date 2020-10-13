@@ -37,11 +37,11 @@ state carState;
 
 void setup() {
     // 入力ピンの準備
-    pinMode(stopBtn, INPUT_PULLUP);
-    pinMode(fwdBtn, INPUT_PULLUP);
-    pinMode(backBtn, INPUT_PULLUP);
-    pinMode(leftBtn, INPUT_PULLUP);
-    pinMode(rightBtn, INPUT_PULLUP);
+    pinMode(stopBtn, INPUT);
+    pinMode(fwdBtn, INPUT);
+    pinMode(backBtn, INPUT);
+    pinMode(leftBtn, INPUT);
+    pinMode(rightBtn, INPUT);
 
     // 出力ピンの準備
     pinMode(leftOut1, OUTPUT);
@@ -55,13 +55,13 @@ void setup() {
 
 void loop() {
     // ボタン状態の読み取り
-    if (digitalRead(stopBtn) == LOW) {
+    if (digitalRead(stopBtn) == HIGH) {
         stopHere();
-    } else if (digitalRead(fwdBtn) == LOW) {
+    } else if (digitalRead(fwdBtn) == HIGH) {
         toForward();
-    } else if (digitalRead(leftBtn) == LOW) {
+    } else if (digitalRead(leftBtn) == HIGH) {
         makeTurn(LEFT);
-    } else if (digitalRead(rightBtn) == LOW) {
+    } else if (digitalRead(rightBtn) == HIGH) {
         makeTurn(RIGHT);
     }
 }
@@ -83,6 +83,13 @@ void neutral() {
 void stopHere() {
     // 状態の更新
     carState = STOP;
+
+    // 少しずつ弱くする
+    for (int i = maxOut; i > 0; i--) {
+        delay(5);
+        analogWrite(leftOut1, i);
+        analogWrite(rightOut1, i);
+    }
 
     // ブレーキをかける
     digitalWrite(leftOut1, HIGH);
