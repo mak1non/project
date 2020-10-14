@@ -43,7 +43,7 @@ void setup() {
 
 void loop() {
     // ボタン状態の読み取り
-    if (digitalRead(stopBtn) == LOW) {
+    if (digitalRead(btn) == LOW) {
         toForward();
     } else {
         stopHere();
