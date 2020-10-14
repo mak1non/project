@@ -31,10 +31,8 @@ class Line:
         ret, self.origImg = self.camera.read()
         if ret is True:
             # 画像をトリミング
-            trimImg = self.origImg[
-                self.cfg.trimY:self.cfg.trimY +
-                self.cfg.trimH,
-            ]
+            trimImg = self.origImg[self.cfg.trimY:self.cfg.trimY +
+                                   self.cfg.trimH, ]
 
             # グレースケール化
             grayImg = cv2.cvtColor(trimImg, cv2.COLOR_BGR2GRAY)
@@ -43,23 +41,16 @@ class Line:
             self.error = '画像取得失敗'
 
         # 画像の2値化
-        ret, self.binaryImg = cv2.threshold(
-            grayImg,
-            self.cfg.threshold,
-            self.cfg.maxValue,
-            cv2.THRESH_BINARY_INV
-        )
+        ret, self.binaryImg = cv2.threshold(grayImg, self.cfg.threshold,
+                                            self.cfg.maxValue,
+                                            cv2.THRESH_BINARY_INV)
         if ret:
             # 左ブロックエリアのフレームをセット
             leftBlock = self.binaryImg[
-                0:self.cfg.trimH,
-                self.cfg.leftArea[0]:self.cfg.leftArea[1]
-            ]
+                0:self.cfg.trimH, self.cfg.leftArea[0]:self.cfg.leftArea[1]]
             # 右ブロックエリアのフレームをセット
             rightBlock = self.binaryImg[
-                0:self.cfg.trimH,
-                self.cfg.rightArea[0]:self.cfg.rightArea[1]
-            ]
+                0:self.cfg.trimH, self.cfg.rightArea[0]:self.cfg.rightArea[1]]
 
             # 左ブロックエリアの白ピクセルカウント
             self.detLB = cv2.countNonZero(leftBlock)
@@ -87,21 +78,13 @@ class Line:
         """
         if self.imgCheck():
             # 左ブロックエリア描画
-            cv2.rectangle(
-                self.binaryImg,
-                (self.cfg.leftArea[0], 0),
-                (self.cfg.leftArea[1], self.cfg.trimH),
-                (0, 0, 255),
-                1
-            )
+            cv2.rectangle(self.binaryImg, (self.cfg.leftArea[0], 0),
+                          (self.cfg.leftArea[1], self.cfg.trimH), (0, 0, 255),
+                          1)
             # 右ブロックエリア描画
-            cv2.rectangle(
-                self.binaryImg,
-                (self.cfg.rightArea[0], 0),
-                (self.cfg.rightArea[1], self.cfg.trimH),
-                (0, 0, 255),
-                1
-            )
+            cv2.rectangle(self.binaryImg, (self.cfg.rightArea[0], 0),
+                          (self.cfg.rightArea[1], self.cfg.trimH), (0, 0, 255),
+                          1)
 
             # 画面に表示
             cv2.imshow('Camera', self.origImg)
@@ -112,7 +95,7 @@ class Line:
 
             # キーの判別
             if key is ord('s') or key is ord('S'):
-                saveImg()
+                self.saveImg()
             elif key is ord('q') or key is ord('Q'):
                 # 終了
                 self.state = State.EXIT
@@ -133,10 +116,7 @@ class Line:
     def printDetect(self):
         """カメラの認識値を表示する (テスト用)
         """
-        print(
-            "detLB : " + str(self.detLB) +
-            " detRB: " + str(self.detRB)
-        )
+        print("detLB : " + str(self.detLB) + " detRB: " + str(self.detRB))
 
     def releaseCam(self):
         """カメラを閉じる

@@ -23,26 +23,16 @@ class Config:
         config = configparser.SafeConfigParser()
 
         # テスト用
-        config['DEFAULT'] = {
-            'test': True
-        }
+        config['DEFAULT'] = {'test': True}
 
         # カメラ番号
-        config['camera'] = {
-            'index': 0
-        }
+        config['camera'] = {'index': 0}
 
         # 2値化の設定
-        config['binary'] = {
-            'threshold': 64,
-            'maxValue': 255
-        }
+        config['binary'] = {'threshold': 64, 'maxValue': 255}
 
         # トリミングサイズ
-        config['trim'] = {
-            'y_coordinate': 180,
-            'height': 30
-        }
+        config['trim'] = {'y_coordinate': 180, 'height': 30}
 
         # 左右ブロックエリア
         config['area'] = {
