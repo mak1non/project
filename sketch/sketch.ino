@@ -13,7 +13,8 @@ enum direction { LEFT, RIGHT };
 const int maxOut = 255;
 
 // ボタンのピン番号
-const int btn = 0;  // 停止スイッチ
+const int fwdBtn = 0;  // 前進スイッチ
+const int invBtn = 1;  // 後進スイッチ
 
 // モータードライバー (TA7291P) のピン番号
 // 左モーター
@@ -29,7 +30,7 @@ state carState;
 
 void setup() {
     // 入力ピンの準備
-    pinMode(btn, INPUT_PULLUP);
+    pinMode(fwdBtn, INPUT_PULLUP);
 
     // 出力ピンの準備
     pinMode(leftOut1, OUTPUT);
@@ -43,8 +44,10 @@ void setup() {
 
 void loop() {
     // ボタン状態の読み取り
-    if (digitalRead(btn) == LOW) {
+    if (digitalRead(fwdBtn) == LOW) {
         toForward();
+    } else if (digitalRead(invBtn) == LOW) {
+        toBackward();
     } else {
         stopHere();
     }
@@ -75,13 +78,23 @@ void stopHere() {
             analogWrite(leftOut1, i);
             analogWrite(rightOut1, i);
         }
+    } else if (carState == BACKWARD) {
+        // 状態の更新
+        carState = STOP;
 
-        // ブレーキをかける
-        digitalWrite(leftOut1, HIGH);
-        digitalWrite(leftOut2, HIGH);
-        digitalWrite(rightOut1, HIGH);
-        digitalWrite(rightOut2, HIGH);
+        // 少しずつ弱くする
+        for (int i = maxOut; i > 0; i--) {
+            delay(5);
+            analogWrite(leftOut2, i);
+            analogWrite(rightOut2, i);
+        }
     }
+
+    // ブレーキをかける
+    digitalWrite(leftOut1, HIGH);
+    digitalWrite(leftOut2, HIGH);
+    digitalWrite(rightOut1, HIGH);
+    digitalWrite(rightOut2, HIGH);
 }
 
 /*
@@ -100,6 +113,26 @@ void toForward() {
             delay(5);
             analogWrite(leftOut1, i);
             analogWrite(rightOut1, i);
+        }
+    }
+}
+
+/*
+ * 後退する
+ */
+void toBackward() {
+    // 後進状態以外でのみ実行
+    if (carState != BACKWARD) {
+        neutral();
+
+        // 前進状態にする
+        carState = BACKWARD;
+
+        // 少しずつ強くする
+        for (int i = 0; i < maxOut; i++) {
+            delay(5);
+            analogWrite(leftOut2, i);
+            analogWrite(rightOut2, i);
         }
     }
 }
