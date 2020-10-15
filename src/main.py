@@ -36,7 +36,7 @@ def main():
 
             # 判定
             car.judgeLine(line.detLB, line.detRB)
-            car.run()
+            car.run(line)
             time.sleep(0.05)
 
         if line.state is State.ERROR:
@@ -50,6 +50,7 @@ def main():
 
     # 終了時にカメラを開放する
     finally:
+        car.dispose()
         line.releaseCam()
 
 
