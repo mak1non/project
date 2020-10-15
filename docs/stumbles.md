@@ -42,6 +42,10 @@ unbuffer python3 src/main.py |& grep --line-buffered -v "Corrupt JPEG data:"
 
 -   出典: [python - OpenCV error on Raspbian: Corrupt jpeg data: 1 extraneous bytes before marker 0xd6 - Stack Overflow](https://stackoverflow.com/questions/42931346/)
 
+## 画面を繋がずにプログラムを実行するとフリーズする
+
+画面を繋がずに Python のプログラムを実行 (SSH 経由) すると、全く入力を受け付けない状態になってしまう。原因が分からないため、テスト時点では画面に接続した状態で実行する必要がある。
+
 ## モバイルバッテリーからの電力の供給が安定しない
 
 モバイルバッテリーから、モーター等を駆動させる電源を取るが、その電流 (電圧?) が安定せず、モーターが止まってしまう場合がある。テスト時点では、モバイルバッテリーではなく、コンセント等から供給して対処しているが、単体稼動させる際に、バッテリーをどうするのかはしっかり検討する必要がある。
