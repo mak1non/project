@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 from car import Car
 from line import Line
 from state import State
@@ -32,11 +33,11 @@ def main():
         while line.state is State.NORMAL:
             # 線の認識
             line.detectLine()
-            line.showImg()
 
             # 判定
             car.judgeLine(line.detLB, line.detRB)
             car.run()
+            time.sleep(0.05)
 
         if line.state is State.ERROR:
             print('エラー: ' + line.error)
