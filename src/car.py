@@ -37,14 +37,19 @@ class Car:
 
         if self.direction == Direction.STOP:
             print('STOP')
+            self.serial.write('STOP')
         elif self.direction == Direction.FORWARD:
             print('FORWARD')
+            self.serial.write('FORWARD')
         elif self.direction == Direction.BACKWARD:
             print('BACKWARD')
+            self.serial.write('BACKWARD')
         elif self.direction == Direction.LEFT:
             print('LEFT')
+            self.serial.write('LEFT')
         elif self.direction == Direction.RIGHT:
             print('RIGHT')
+            self.serial.write('RIGHT')
 
     def dispose(self):
         """シリアル通信を手放す
