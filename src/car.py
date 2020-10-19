@@ -1,5 +1,4 @@
 import time
-import RPi.GPIO as GPIO
 from direction import Direction
 
 
@@ -16,11 +15,6 @@ class Car:
         self.rightPin = 35
         self.outputs = (self.stopPin, self.fwdPin, self.backPin, self.leftPin,
                         self.rightPin)
-
-        # 出力の準備
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.button, GPIO.IN)
-        GPIO.setup(self.outputs, GPIO.OUT)
 
         # 初期化
         self.direction = Direction.STOP
@@ -43,25 +37,20 @@ class Car:
     def run(self, line):
         """実際にモーターを動作させる
         """
-        print(self.direction)
-        GPIO.output(self.outputs, False)
         time.sleep(0.01)
 
-        if GPIO.input(self.button) != 1:
-            line.saveImg()
-
         if self.direction == Direction.STOP:
-            GPIO.output(self.stopPin, True)
+            print("STOP")
         elif self.direction == Direction.FORWARD:
-            GPIO.output(self.fwdPin, True)
+            print("FORWARD")
         elif self.direction == Direction.BACKWARD:
-            GPIO.output(self.backPin, True)
+            print("BACKWARD")
         elif self.direction == Direction.LEFT:
-            GPIO.output(self.leftPin, True)
+            print("LEFT")
         elif self.direction == Direction.RIGHT:
-            GPIO.output(self.rightPin, True)
+            print("RIGHT")
 
     def dispose(self):
         """GPIO を手放す
         """
-        GPIO.cleanup()
+        print("GPIO dispose")
