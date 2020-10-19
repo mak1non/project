@@ -1,23 +1,15 @@
+import serial
 import time
 from direction import Direction
 
 
 class Car:
-    def __init__(self):
-        # 入力ピン
-        self.button = 33
-
-        # 出力ピン
-        self.stopPin = 40
-        self.fwdPin = 38
-        self.backPin = 37
-        self.leftPin = 36
-        self.rightPin = 35
-        self.outputs = (self.stopPin, self.fwdPin, self.backPin, self.leftPin,
-                        self.rightPin)
-
+    def __init__(self, port='/dev/ttyACM0', baud='9600'):
         # 初期化
         self.direction = Direction.STOP
+
+        # シリアル通信の準備
+        self.serial = serial.Serial(port, baud)
 
     def judgeLine(self, leftBlock, rightBlock):
         """線に合わせて進行方向を変える
@@ -51,6 +43,7 @@ class Car:
             print("RIGHT")
 
     def dispose(self):
-        """GPIO を手放す
+        """シリアル通信を手放す
         """
-        print("GPIO dispose")
+        print("Serial dispose")
+        self.serial.close()
