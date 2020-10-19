@@ -1,7 +1,5 @@
 import time
-
 import RPi.GPIO as GPIO
-
 from direction import Direction
 
 
