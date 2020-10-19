@@ -8,9 +8,6 @@ class Car:
         # 初期化
         self.direction = Direction.STOP
 
-        # 入力ピン
-        self.button = 3
-
         # 出力ピン
         self.stopPin = 7
         self.fwdPin = 8
@@ -41,19 +38,11 @@ class Car:
         else:
             self.direction = Direction.FORWARD
 
-    def run(self, line):
+    def run(self):
         """Arduino に指示を出す
-
-        Args:
-            line (Line): Line クラスのインスタンス
         """
         print(self.direction)
         GPIO.output(self.outputs, False)
-        time.sleep(0.01)
-
-        # 撮影ボタン
-        if GPIO.input(self.button) != 1:
-            line.saveImg()
 
         # 各種出力
         if self.direction == Direction.STOP:
@@ -66,6 +55,9 @@ class Car:
             GPIO.output(self.leftPin, True)
         elif self.direction == Direction.RIGHT:
             GPIO.output(self.rightPin, True)
+
+        # 調整
+        time.sleep(0.03)
 
     def dispose(self):
         """GPIO を手放す
