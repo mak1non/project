@@ -1,15 +1,29 @@
-import serial
+import RPi.GPIO as GPIO
 import time
 from direction import Direction
 
 
 class Car:
-    def __init__(self, port='/dev/ttyACM0', baud='9600'):
+    def __init__(self):
         # 初期化
         self.direction = Direction.STOP
 
-        # シリアル通信の準備
-        self.serial = serial.Serial(port, baud)
+        # 入力ピン
+        self.button = 3
+
+        # 出力ピン
+        self.stopPin = 7
+        self.fwdPin = 8
+        self.backPin = 10
+        self.leftPin = 11
+        self.rightPin = 12
+        self.outputs = (self.stopPin, self.fwdPin, self.backPin, self.leftPin,
+                        self.rightPin)
+
+        # 出力の準備
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.button, GPIO.IN)
+        GPIO.setup(self.outputs, GPIO.OUT)
 
     def judgeLine(self, leftBlock, rightBlock):
         """線に合わせて進行方向を変える
@@ -33,29 +47,28 @@ class Car:
         Args:
             line (Line): Line クラスのインスタンス
         """
+        print(self.direction)
+        GPIO.output(self.outputs, False)
         time.sleep(0.01)
 
+        # 撮影ボタン
+        if GPIO.input(self.button) != 1:
+            line.saveImg()
+
+        # 各種出力
         if self.direction == Direction.STOP:
-            print('STOP')
-            self.serial.write(int.to_bytes(0, 1, 'big'))
+            GPIO.output(self.stopPin, True)
         elif self.direction == Direction.FORWARD:
-            print('FORWARD')
-            self.serial.write(int.to_bytes(1, 1, 'big'))
+            GPIO.output(self.fwdPin, True)
         elif self.direction == Direction.BACKWARD:
-            print('BACKWARD')
-            self.serial.write(int.to_bytes(2, 1, 'big'))
+            GPIO.output(self.backPin, True)
         elif self.direction == Direction.LEFT:
-            print('LEFT')
-            self.serial.write(int.to_bytes(3, 1, 'big'))
+            GPIO.output(self.leftPin, True)
         elif self.direction == Direction.RIGHT:
-            print('RIGHT')
-            self.serial.write(int.to_bytes(4, 1, 'big'))
+            GPIO.output(self.rightPin, True)
 
     def dispose(self):
-        """シリアル通信を手放す
+        """GPIO を手放す
         """
-        print('Stop')
-        self.serial.write(0)
-
-        print('Serial dispose')
-        self.serial.close()
+        print('GPIO Close')
+        GPIO.cleanup()

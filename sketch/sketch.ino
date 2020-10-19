@@ -12,6 +12,13 @@ enum direction { LEFT, RIGHT };
 // 最高出力
 const int maxOut = 255;
 
+// ボタンのピン番号
+const int stopBtn = 0;   // 停止スイッチ
+const int fwdBtn = 1;    // 前進スイッチ
+const int invBtn = 2;    // 後進スイッチ
+const int leftBtn = 3;   // 左折スイッチ
+const int rightBtn = 4;  // 右折スイッチ
+
 // モータードライバー (TA7291P) のピン番号
 // 左モーター
 const int leftOut1 = 5;  // 入力1
@@ -25,9 +32,12 @@ const int rightOut2 = 10;  // 入力2
 state carState;
 
 void setup() {
-    // シリアル通信の準備
-    Serial.begin(9600);
-    Serial.println("Ready.");
+    // 入力ピンの準備
+    pinMode(stopBtn, INPUT_PULLUP);
+    pinMode(fwdBtn, INPUT_PULLUP);
+    pinMode(invBtn, INPUT_PULLUP);
+    pinMode(leftBtn, INPUT_PULLUP);
+    pinMode(rightBtn, INPUT_PULLUP);
     
     // 出力ピンの準備
     pinMode(leftOut1, OUTPUT);
@@ -37,25 +47,25 @@ void setup() {
 
     // 初期化
     neutral();
+    delay(1000);
 }
 
 void loop() {
-    if (Serial.available()) {
-        // シリアル入力の読み取り
-        byte input = Serial.read();
-
-        // 0: 停止, 1: 前進, 2: 後退, 3: 左折, 4: 右折
-        if (input == 0) {
-            stopHere();
-        } else if (input == 1) {
-            toForward();
-        } else if (input == 2) {
-            toBackward();
-        } else if (input == 3) {
-            makeTurn(LEFT);
-        } else if (input == 4) {
-            makeTurn(RIGHT);
-        }
+    // ボタン状態の読み取り
+    if (digitalRead(stopBtn) == LOW) {
+        stopHere();
+    }
+    if (digitalRead(fwdBtn) == LOW) {
+        toForward();
+    }
+    if (digitalRead(invBtn) == LOW) {
+        toBackward();
+    }
+    if (digitalRead(leftBtn) == LOW) {
+        makeTurn(LEFT);
+    }
+    if (digitalRead(rightBtn) == LOW) {
+        makeTurn(RIGHT);
     }
 }
 
@@ -149,20 +159,16 @@ void toBackward() {
  * dir: 曲がる方向
  */
 void makeTurn(direction dir) {
+    // 前進中のみ実行
     if (carState == FORWARD) {
-        // 止めるピン番号
-        int pin;
-    
-        // 左右の識別
         if (dir == LEFT) {
-            pin = leftOut1;
+            analogWrite(leftOut1, 0);
+            delay(2000);
+            analogWrite(leftOut1, maxOut);
         } else {
-            pin = rightOut1;
+            analogWrite(rightOut1, 0);
+            delay(2000);
+            analogWrite(rightOut1, maxOut);
         }
-    
-        // ブレーキ動作
-        digitalWrite(pin, LOW);
-        delay(2000);  // 要調整
-        analogWrite(pin, maxOut);
     }
 }
