@@ -42,17 +42,18 @@ void setup() {
 void loop() {
     if (Serial.available()) {
         // シリアル入力の読み取り
-        String input = Serial.readString();
+        byte input = Serial.read();
 
-        if (input.equals("STOP")) {
+        // 0: 停止, 1: 前進, 2: 後退, 3: 左折, 4: 右折
+        if (input == 0) {
             stopHere();
-        } else if (input.equals("FORWARD")) {
+        } else if (input == 1) {
             toForward();
-        } else if (input.equals("BACKWARD")) {
+        } else if (input == 2) {
             toBackward();
-        } else if (input.equals("LEFT")) {
+        } else if (input == 3) {
             makeTurn(LEFT);
-        } else if (input.equals("RIGHT")) {
+        } else if (input == 4) {
             makeTurn(RIGHT);
         }
     }
@@ -95,11 +96,11 @@ void stopHere() {
         }
     }
 
-    // ブレーキをかける
-    digitalWrite(leftOut1, HIGH);
-    digitalWrite(leftOut2, HIGH);
-    digitalWrite(rightOut1, HIGH);
-    digitalWrite(rightOut2, HIGH);
+    // 止める
+    digitalWrite(leftOut1, LOW);
+    digitalWrite(leftOut2, LOW);
+    digitalWrite(rightOut1, LOW);
+    digitalWrite(rightOut2, LOW);
 }
 
 /*
@@ -148,18 +149,20 @@ void toBackward() {
  * dir: 曲がる方向
  */
 void makeTurn(direction dir) {
-    // 止めるピン番号
-    int pin;
-
-    // 左右の識別
-    if (dir == LEFT) {
-        pin = leftOut1;
-    } else {
-        pin = rightOut1;
+    if (carState == FORWARD) {
+        // 止めるピン番号
+        int pin;
+    
+        // 左右の識別
+        if (dir == LEFT) {
+            pin = leftOut1;
+        } else {
+            pin = rightOut1;
+        }
+    
+        // ブレーキ動作
+        digitalWrite(pin, LOW);
+        delay(2000);  // 要調整
+        analogWrite(pin, maxOut);
     }
-
-    // ブレーキ動作
-    analogWrite(pin, LOW);
-    delay(2000);  // 要調整
-    analogWrite(pin, maxOut);
 }

@@ -29,6 +29,9 @@ def main():
     # モーター操作
     car = Car()
 
+    # モーターの準備を待つ
+    time.sleep(1)
+
     try:
         while line.state is State.NORMAL:
             # 線の認識
