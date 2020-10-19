@@ -107,7 +107,7 @@ class Line:
         if self.imgCheck():
             # 時間の取得
             now = datetime.datetime.now()
-            time = now.strftime("%Y-%m-%dT%H_%M_%S")
+            time = now.strftime('%Y-%m-%dT%H_%M_%S')
 
             # 写真の撮影
             cv2.imwrite('pictures/' + time + '_orig.jpg', self.origImg)
@@ -116,7 +116,7 @@ class Line:
     def printDetect(self):
         """カメラの認識値を表示する (テスト用)
         """
-        print("detLB : " + str(self.detLB) + " detRB: " + str(self.detRB))
+        print('detLB : ' + str(self.detLB) + ' detRB: ' + str(self.detRB))
 
     def releaseCam(self):
         """カメラを閉じる

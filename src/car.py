@@ -36,18 +36,18 @@ class Car:
         time.sleep(0.01)
 
         if self.direction == Direction.STOP:
-            print("STOP")
+            print('STOP')
         elif self.direction == Direction.FORWARD:
-            print("FORWARD")
+            print('FORWARD')
         elif self.direction == Direction.BACKWARD:
-            print("BACKWARD")
+            print('BACKWARD')
         elif self.direction == Direction.LEFT:
-            print("LEFT")
+            print('LEFT')
         elif self.direction == Direction.RIGHT:
-            print("RIGHT")
+            print('RIGHT')
 
     def dispose(self):
         """シリアル通信を手放す
         """
-        print("Serial dispose")
+        print('Serial dispose')
         self.serial.close()
