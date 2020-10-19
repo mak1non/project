@@ -9,11 +9,11 @@ class Car:
         self.direction = Direction.STOP
 
         # 出力ピン
-        self.stopPin = 7
-        self.fwdPin = 8
-        self.backPin = 10
-        self.leftPin = 11
-        self.rightPin = 12
+        self.stopPin = 7  # 停止
+        self.fwdPin = 8  # 前進
+        self.backPin = 10  # 後退
+        self.leftPin = 11  # 左折
+        self.rightPin = 12  # 右折
         self.outputs = (self.stopPin, self.fwdPin, self.backPin, self.leftPin,
                         self.rightPin)
 
