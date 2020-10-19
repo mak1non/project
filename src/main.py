@@ -39,7 +39,7 @@ def main():
 
             # 判定
             car.judgeLine(line.detLB, line.detRB)
-            car.run(line)
+            car.run()
             time.sleep(0.05)
 
         if line.state is State.ERROR:
