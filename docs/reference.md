@@ -5,6 +5,11 @@
 Arduino Language Reference
 https://www.arduino.cc/reference/en/
 
+## Python
+
+Interface Python and Arduino With PySerial : 3 Steps - Instructables
+https://www.instructables.com/Interface-Python-and-Arduino-with-pySerial/
+
 ## OpenCV
 
 OpenCV 入門編（画像処理と Python）
