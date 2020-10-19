@@ -19,7 +19,6 @@ class Car:
 
         # 出力の準備
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.button, GPIO.IN)
         GPIO.setup(self.outputs, GPIO.OUT)
 
     def judgeLine(self, leftBlock, rightBlock):
