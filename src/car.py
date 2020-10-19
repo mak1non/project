@@ -13,6 +13,7 @@ class Car:
 
     def judgeLine(self, leftBlock, rightBlock):
         """線に合わせて進行方向を変える
+        
         Args:
             leftBlock (int): 左ブロックエリア
             rightBlock (int): 右ブロックエリア
@@ -27,7 +28,10 @@ class Car:
             self.direction = Direction.FORWARD
 
     def run(self, line):
-        """実際にモーターを動作させる
+        """Arduino に指示を出す
+
+        Args:
+            line (Line): Line クラスのインスタンス
         """
         time.sleep(0.01)
 
