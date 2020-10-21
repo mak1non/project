@@ -12,13 +12,6 @@ enum direction { LEFT, RIGHT };
 // 最高出力
 const int maxOut = 255;
 
-// ボタンのピン番号
-const int stopBtn = 0;   // 停止スイッチ
-const int fwdBtn = 1;    // 前進スイッチ
-const int invBtn = 2;    // 後進スイッチ
-const int leftBtn = 3;   // 左折スイッチ
-const int rightBtn = 4;  // 右折スイッチ
-
 // モータードライバー (TA7291P) のピン番号
 // 左モーター
 const int leftOut1 = 5;  // 入力1
@@ -32,13 +25,9 @@ const int rightOut2 = 10;  // 入力2
 state carState;
 
 void setup() {
-    // 入力ピンの準備
-    pinMode(stopBtn, INPUT_PULLUP);
-    pinMode(fwdBtn, INPUT_PULLUP);
-    pinMode(invBtn, INPUT_PULLUP);
-    pinMode(leftBtn, INPUT_PULLUP);
-    pinMode(rightBtn, INPUT_PULLUP);
-    
+    // シリアル通信の準備
+    Serial.begin(115200);
+
     // 出力ピンの準備
     pinMode(leftOut1, OUTPUT);
     pinMode(leftOut2, OUTPUT);
@@ -51,21 +40,21 @@ void setup() {
 }
 
 void loop() {
-    // ボタン状態の読み取り
-    if (digitalRead(stopBtn) == LOW) {
-        stopHere();
-    }
-    if (digitalRead(fwdBtn) == LOW) {
-        toForward();
-    }
-    if (digitalRead(invBtn) == LOW) {
-        toBackward();
-    }
-    if (digitalRead(leftBtn) == LOW) {
-        makeTurn(LEFT);
-    }
-    if (digitalRead(rightBtn) == LOW) {
-        makeTurn(RIGHT);
+    if (Serial.available() > 0) {
+        // 入力の読み取り
+        String input = Serial.readStringUntil('\n');
+
+        if (input.substring(0, 1) == "S") {
+            stopHere();  // 停止
+        } else if (input.substring(0, 1) == "A") {
+            toForward();  // 前進
+        } else if (input.substring(0, 1) == "B") {
+            toBackward();  // 後退
+        } else if (input.substring(0, 1) == "L") {
+            makeTurn(LEFT);  // 左折
+        } else if (input.substring(0, 1) == "R") {
+            makeTurn(RIGHT);  // 右折
+        }
     }
 }
 

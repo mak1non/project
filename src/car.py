@@ -6,6 +6,7 @@ from direction import Direction
 class Car:
     def __init__(self):
         # 初期化
+        self.preDirection = Direction.STOP
         self.direction = Direction.STOP
 
         # 出力ピン
@@ -19,7 +20,6 @@ class Car:
 
         # 出力の準備
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.button, GPIO.IN)
         GPIO.setup(self.outputs, GPIO.OUT)
 
     def judgeLine(self, leftBlock, rightBlock):
@@ -29,6 +29,9 @@ class Car:
             leftBlock (int): 左ブロックエリア
             rightBlock (int): 右ブロックエリア
         """
+        # 状態を保存する
+        self.preDirection = self.direction
+
         if leftBlock > 0 and rightBlock > 0:
             self.direction = Direction.STOP
         elif leftBlock > 0:
@@ -44,17 +47,20 @@ class Car:
         print(self.direction)
         GPIO.output(self.outputs, False)
 
-        # 各種出力
-        if self.direction == Direction.STOP:
-            GPIO.output(self.stopPin, True)
-        elif self.direction == Direction.FORWARD:
-            GPIO.output(self.fwdPin, True)
-        elif self.direction == Direction.BACKWARD:
-            GPIO.output(self.backPin, True)
-        elif self.direction == Direction.LEFT:
-            GPIO.output(self.leftPin, True)
-        elif self.direction == Direction.RIGHT:
-            GPIO.output(self.rightPin, True)
+        if self.preDirection == self.direction:
+            print('Same')
+        else:
+            # 各種出力
+            if self.direction == Direction.STOP:
+                GPIO.output(self.stopPin, True)
+            elif self.direction == Direction.FORWARD:
+                GPIO.output(self.fwdPin, True)
+            elif self.direction == Direction.BACKWARD:
+                GPIO.output(self.backPin, True)
+            elif self.direction == Direction.LEFT:
+                GPIO.output(self.leftPin, True)
+            elif self.direction == Direction.RIGHT:
+                GPIO.output(self.rightPin, True)
 
         # 調整
         time.sleep(0.03)
