@@ -59,9 +59,6 @@ class Car:
             elif self.direction == Direction.RIGHT:
                 self.serial.write(b'R')
 
-        # 調整
-        time.sleep(0.5)
-
     def dispose(self):
         """シリアル通信を手放す
         """
