@@ -1,5 +1,4 @@
 import serial
-import time
 from direction import Direction
 
 
