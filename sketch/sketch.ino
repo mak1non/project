@@ -27,7 +27,7 @@ state carState;
 void setup() {
     // シリアル通信の準備
     Serial.begin(115200);
-    
+
     // 出力ピンの準備
     pinMode(leftOut1, OUTPUT);
     pinMode(leftOut2, OUTPUT);
@@ -40,7 +40,22 @@ void setup() {
 }
 
 void loop() {
-    
+    if (Serial.available() > 0) {
+        // 入力の読み取り
+        String input = Serial.readStringUntil('\n');
+
+        if (input.charAt(0) == "S") {
+            stopHere();  // 停止
+        } else if (input.charAt(0) == "A") {
+            toForward();  // 前進
+        } else if (input.charAt(0) == "B") {
+            toBackward();  // 後退
+        } else if (input.charAt(0) == "L") {
+            makeTurn(LEFT);  // 左折
+        } else if (input.charAt(0) == "R") {
+            makeTurn(RIGHT);  // 右折
+        }
+    }
 }
 
 /*
