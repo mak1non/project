@@ -2,10 +2,15 @@ import configparser
 
 
 class Config:
-    def __init__(self):
+    def __init__(self, config='config.ini'):
+        """設定ファイルの読み込み
+
+        Args:
+            config (str, optional): 設定ファイルのファイル名 (デフォルト: 'config.ini')
+        """
         # 設定ファイルの読み込み
         config_ini = configparser.SafeConfigParser()
-        config_ini.read('config.ini', encoding='utf-8')
+        config_ini.read(config, encoding='utf-8')
 
         # テスト用
         config_test = config_ini['DEFAULT']
