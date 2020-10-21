@@ -24,7 +24,7 @@ def main():
     car = Car()
 
     # モーターの準備を待つ
-    time.sleep(1)
+    time.sleep(2)
 
     try:
         while line.state is State.NORMAL:

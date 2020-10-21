@@ -56,13 +56,11 @@ class Car:
                 self.serial.write(b'B')
             elif self.direction == Direction.LEFT:
                 self.serial.write(b'L')
-                time.sleep(2)  # 調整
             elif self.direction == Direction.RIGHT:
                 self.serial.write(b'R')
-                time.sleep(2)  # 調整
 
         # 調整
-        time.sleep(0.03)
+        time.sleep(0.5)
 
     def dispose(self):
         """シリアル通信を手放す

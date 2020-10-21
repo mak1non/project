@@ -9,8 +9,11 @@ enum state { BACKWARD, FORWARD, NEUTRAL, STOP };
 
 enum direction { LEFT, RIGHT };
 
-// 最高出力
+// 出力
+const int count = 5;
 const int maxOut = 255;
+const int minOut = -255;
+int motorOut = 0;
 
 // モータードライバー (TA7291P) のピン番号
 // 左モーター
@@ -34,32 +37,53 @@ void setup() {
     pinMode(rightOut1, OUTPUT);
     pinMode(rightOut2, OUTPUT);
 
-    // 初期化
     neutral();
-    delay(1000);
 }
 
 void loop() {
+    // 入力の読み取り
     if (Serial.available() > 0) {
-        // 入力の読み取り
         String input = Serial.readStringUntil('\n');
 
         if (input.substring(0, 1) == "S") {
-            stopHere();  // 停止
+            carState = STOP;  // 停止
         } else if (input.substring(0, 1) == "A") {
-            toForward();  // 前進
+            carState = FORWARD;  // 前進
         } else if (input.substring(0, 1) == "B") {
-            toBackward();  // 後退
+            carState = BACKWARD;  // 後退
         } else if (input.substring(0, 1) == "L") {
             makeTurn(LEFT);  // 左折
         } else if (input.substring(0, 1) == "R") {
             makeTurn(RIGHT);  // 右折
         }
     }
+
+    // 現在速度
+    if (carState == STOP && motorOut > 0) {
+        motorOut -= count;
+    } else if (carState == STOP && motorOut < 0) {
+        motorOut += count;
+    } else if (carState == FORWARD && motorOut < maxOut) {
+        motorOut += count;
+    } else if (carState == BACKWARD && motorOut > minOut) {
+        motorOut -= count;
+    }
+
+    // 速度の反映
+    if (motorOut == 0) {
+        neutral();
+    } else if (motorOut > 0) {
+        analogWrite(leftOut1, motorOut);
+        analogWrite(rightOut1, motorOut);
+    } else if (motorOut < 0) {
+        int out = motorOut * -1;
+        analogWrite(leftOut1, out);
+        analogWrite(rightOut1, out);
+    }
 }
 
 /*
- * ニュートラル
+ * 初期化
  */
 void neutral() {
     carState = NEUTRAL;
@@ -67,79 +91,6 @@ void neutral() {
     digitalWrite(leftOut2, LOW);
     digitalWrite(rightOut1, LOW);
     digitalWrite(rightOut2, LOW);
-}
-
-/*
- * 止まる (TODO)
- */
-void stopHere() {
-    if (carState == FORWARD) {
-        // 状態の更新
-        carState = STOP;
-
-        // 少しずつ弱くする
-        for (int i = maxOut; i > 0; i--) {
-            delay(5);
-            analogWrite(leftOut1, i);
-            analogWrite(rightOut1, i);
-        }
-    } else if (carState == BACKWARD) {
-        // 状態の更新
-        carState = STOP;
-
-        // 少しずつ弱くする
-        for (int i = maxOut; i > 0; i--) {
-            delay(5);
-            analogWrite(leftOut2, i);
-            analogWrite(rightOut2, i);
-        }
-    }
-
-    // 止める
-    digitalWrite(leftOut1, LOW);
-    digitalWrite(leftOut2, LOW);
-    digitalWrite(rightOut1, LOW);
-    digitalWrite(rightOut2, LOW);
-}
-
-/*
- * 前に進む
- */
-void toForward() {
-    // 前進状態以外でのみ実行
-    if (carState != FORWARD) {
-        neutral();
-
-        // 前進状態にする
-        carState = FORWARD;
-
-        // 少しずつ強くする
-        for (int i = 0; i < maxOut; i++) {
-            delay(5);
-            analogWrite(leftOut1, i);
-            analogWrite(rightOut1, i);
-        }
-    }
-}
-
-/*
- * 後退する
- */
-void toBackward() {
-    // 後進状態以外でのみ実行
-    if (carState != BACKWARD) {
-        neutral();
-
-        // 前進状態にする
-        carState = BACKWARD;
-
-        // 少しずつ強くする
-        for (int i = 0; i < maxOut; i++) {
-            delay(5);
-            analogWrite(leftOut2, i);
-            analogWrite(rightOut2, i);
-        }
-    }
 }
 
 /*
@@ -153,11 +104,11 @@ void makeTurn(direction dir) {
         if (dir == LEFT) {
             analogWrite(leftOut1, 0);
             delay(2000);
-            analogWrite(leftOut1, maxOut);
+            analogWrite(leftOut1, motorOut);
         } else {
             analogWrite(rightOut1, 0);
             delay(2000);
-            analogWrite(rightOut1, maxOut);
+            analogWrite(rightOut1, motorOut);
         }
     }
 }
