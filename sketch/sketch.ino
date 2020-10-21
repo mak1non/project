@@ -44,15 +44,15 @@ void loop() {
         // 入力の読み取り
         String input = Serial.readStringUntil('\n');
 
-        if (input.charAt(0) == "S") {
+        if (input.substring(0, 1) == "S") {
             stopHere();  // 停止
-        } else if (input.charAt(0) == "A") {
+        } else if (input.substring(0, 1) == "A") {
             toForward();  // 前進
-        } else if (input.charAt(0) == "B") {
+        } else if (input.substring(0, 1) == "B") {
             toBackward();  // 後退
-        } else if (input.charAt(0) == "L") {
+        } else if (input.substring(0, 1) == "L") {
             makeTurn(LEFT);  // 左折
-        } else if (input.charAt(0) == "R") {
+        } else if (input.substring(0, 1) == "R") {
             makeTurn(RIGHT);  // 右折
         }
     }
