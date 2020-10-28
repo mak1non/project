@@ -12,7 +12,7 @@ def main():
     # 画像保存ディレクトリ作成
     os.makedirs('pictures/', mode=0o755, exist_ok=True)
 
-    # 取得
+    # カメラの取得
     line = Line()
 
     # カメラ取得チェック
@@ -20,10 +20,10 @@ def main():
         print("Can't open camera.")
         sys.exit(1)  # プログラム終了
 
-    # モーター操作
+    # モーター操作の準備
     car = Car()
 
-    # モーターの準備を待つ
+    # シリアル通信の準備を待つ
     time.sleep(2)
 
     try:
