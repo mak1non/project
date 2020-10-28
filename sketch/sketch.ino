@@ -94,6 +94,7 @@ void neutral() {
     digitalWrite(leftOut2, LOW);
     digitalWrite(rightOut1, LOW);
     digitalWrite(rightOut2, LOW);
+    delay(1000);
 }
 
 /*
