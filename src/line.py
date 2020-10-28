@@ -26,6 +26,8 @@ class Line:
 
     def detectLine(self):
         """線を認識する
+        線が左右ブロックエリアに何 px 入っているのかをカウントし、
+        それぞれ self.leftBlock と self.rightBlock に格納する
         """
         # 白黒画像
         grayImg = None

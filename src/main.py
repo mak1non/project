@@ -35,6 +35,7 @@ def main():
             car.judgeLine(line.detLB, line.detRB)
             car.run()
 
+        # エラー時の表示
         if line.state is State.ERROR:
             print('エラー: ' + line.error)
         elif line.state is State.EXIT:
