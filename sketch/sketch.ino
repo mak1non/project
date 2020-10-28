@@ -5,7 +5,7 @@
  * https://mak1non.github.io/project/mortar.html
  */
 
-enum state { BACKWARD, FORWARD, NEUTRAL, STOP };
+enum state { BACKWARD, FORWARD, STOP };
 
 enum direction { LEFT, RIGHT };
 
@@ -25,7 +25,7 @@ const int rightOut1 = 9;   // 入力1
 const int rightOut2 = 10;  // 入力2
 
 // 走行状態
-state carState;
+state carState = STOP;
 
 void setup() {
     // シリアル通信の準備
@@ -44,6 +44,10 @@ void loop() {
     // 入力の読み取り
     if (Serial.available() > 0) {
         String input = Serial.readStringUntil('\n');
+
+        if (input.substring(0, 1) == '\r') {
+            input.remove(0, 1);
+        }
 
         if (input.substring(0, 1) == "S") {
             carState = STOP;  // 停止
@@ -77,8 +81,8 @@ void loop() {
         analogWrite(rightOut1, motorOut);
     } else if (motorOut < 0) {
         int out = motorOut * -1;
-        analogWrite(leftOut1, out);
-        analogWrite(rightOut1, out);
+        analogWrite(leftOut2, out);
+        analogWrite(rightOut2, out);
     }
 }
 
@@ -86,7 +90,6 @@ void loop() {
  * 初期化
  */
 void neutral() {
-    carState = NEUTRAL;
     digitalWrite(leftOut1, LOW);
     digitalWrite(leftOut2, LOW);
     digitalWrite(rightOut1, LOW);
