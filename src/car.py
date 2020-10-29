@@ -47,20 +47,21 @@ class Car:
         print(self.direction)
 
         # 状態が変化していなければ出力しない
-        if self.preDirection == self.direction:
+        if self.preDirection is self.direction:
             print('Same')
-        else:
-            # 各種出力
-            if self.direction == Direction.STOP:
-                self.serial.write(b'S')  # 停止
-            elif self.direction == Direction.FORWARD:
-                self.serial.write(b'A')  # 前進
-            elif self.direction == Direction.BACKWARD:
-                self.serial.write(b'B')  # 後退
-            elif self.direction == Direction.LEFT:
-                self.serial.write(b'L')  # 左折
-            elif self.direction == Direction.RIGHT:
-                self.serial.write(b'R')  # 右折
+            return
+        
+        # 各種出力
+        if self.direction is Direction.STOP:
+            self.serial.write(b'S')  # 停止
+        elif self.direction is Direction.FORWARD:
+            self.serial.write(b'A')  # 前進
+        elif self.direction is Direction.BACKWARD:
+            self.serial.write(b'B')  # 後退
+        elif self.direction is Direction.LEFT:
+            self.serial.write(b'L')  # 左折
+        elif self.direction is Direction.RIGHT:
+            self.serial.write(b'R')  # 右折
 
     def dispose(self):
         """シリアル通信を終了する
