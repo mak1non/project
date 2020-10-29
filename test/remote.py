@@ -13,6 +13,7 @@ def main():
         serial_out = bytes(user_in, 'utf-8')
         ser.write(serial_out)
 
+    ser.write(b'S')
     ser.close()
 
 
