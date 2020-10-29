@@ -1,5 +1,6 @@
 import serial
 
+
 def main():
     ser = serial.Serial(port='/dev/ttyACM0', baudrate=115200)
 
@@ -11,8 +12,9 @@ def main():
 
         serial_out = bytes(user_in, 'utf-8')
         ser.write(serial_out)
-    
+
     ser.close()
+
 
 if __name__ == "__main__":
     main()
