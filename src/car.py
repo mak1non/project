@@ -43,13 +43,12 @@ class Car:
     def run(self):
         """Arduino に指示を出す
         """
-        # 方向を表示
-        print(self.direction)
-
         # 状態が変化していなければ出力しない
         if self.preDirection is self.direction:
-            print('Same')
             return
+        
+        # 方向を表示
+        print(self.direction)
         
         # 各種出力
         if self.direction is Direction.STOP:
