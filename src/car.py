@@ -15,7 +15,7 @@ class Car:
         self.direction = Direction.STOP
 
         # シリアル通信の準備
-        self.serial = serial.Serial(port=port, baudrate=baud)
+        self.arduino = serial.Serial(port=port, baudrate=baud)
 
     def judgeLine(self, leftBlock, rightBlock):
         """線に合わせて進行方向を変える (line.py も参照)
@@ -53,22 +53,22 @@ class Car:
         
         # 各種出力
         if self.direction is Direction.STOP:
-            self.serial.write(b'S')  # 停止
+            self.arduino.write(b'S')  # 停止
         elif self.direction is Direction.FORWARD:
-            self.serial.write(b'A')  # 前進
+            self.arduino.write(b'A')  # 前進
         elif self.direction is Direction.BACKWARD:
-            self.serial.write(b'B')  # 後退
+            self.arduino.write(b'B')  # 後退
         elif self.direction is Direction.LEFT:
-            self.serial.write(b'L')  # 左折
+            self.arduino.write(b'L')  # 左折
         elif self.direction is Direction.RIGHT:
-            self.serial.write(b'R')  # 右折
+            self.arduino.write(b'R')  # 右折
 
     def dispose(self):
         """シリアル通信を終了する
         """
         # ブレーキする
-        self.serial.write(b'S')
+        self.arduino.write(b'S')
 
         # 終了する
         print('Serial Close')
-        self.serial.close()
+        self.arduino.close()

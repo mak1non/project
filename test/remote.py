@@ -2,7 +2,7 @@ import serial
 
 
 def main():
-    ser = serial.Serial(port='/dev/ttyACM0', baudrate=115200)
+    arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200)
 
     while True:
         user_in = input('> ')
@@ -11,10 +11,10 @@ def main():
             break
 
         serial_out = bytes(user_in, 'utf-8')
-        ser.write(serial_out)
+        arduino.write(serial_out)
 
-    ser.write(b'S')
-    ser.close()
+    arduino.write(b'S')
+    arduino.close()
 
 
 if __name__ == "__main__":
