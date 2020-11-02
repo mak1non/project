@@ -38,12 +38,14 @@ void setup() {
     pinMode(rightOut2, OUTPUT);
 
     neutral();
+    Serial.println("Ready.");
 }
 
 void loop() {
     // 入力の読み取り
     if (Serial.available() > 0) {
         String input = Serial.readStringUntil('\n');
+        Serial.println("Read: " + input);
 
         if (input.substring(0, 1) == '\r') {
             input.remove(0, 1);
@@ -107,11 +109,11 @@ void makeTurn(direction dir) {
     if (carState == FORWARD) {
         if (dir == LEFT) {
             analogWrite(leftOut1, 0);
-            delay(2000);
+            delay(1000);
             analogWrite(leftOut1, motorOut);
         } else {
             analogWrite(rightOut1, 0);
-            delay(2000);
+            delay(1000);
             analogWrite(rightOut1, motorOut);
         }
     }
