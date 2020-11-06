@@ -30,6 +30,7 @@ def main():
         while line.state is State.NORMAL:
             # 線の認識
             line.detectLine()
+            line.showImg()
 
             # 判定
             car.judgeLine(line.detLB, line.detRB)
