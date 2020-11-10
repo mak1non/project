@@ -17,12 +17,12 @@ int motorOut = 0;
 
 // モータードライバー (TA7291P) のピン番号
 // 左モーター
-const int leftOut1 = 5;  // 入力1
-const int leftOut2 = 6;  // 入力2
+const int leftOut1 = 10;  // 入力1
+const int leftOut2 = 9;   // 入力2
 
 // 右モーター
-const int rightOut1 = 9;   // 入力1
-const int rightOut2 = 10;  // 入力2
+const int rightOut1 = 6;  // 入力1
+const int rightOut2 = 5;  // 入力2
 
 // 走行状態
 state carState = STOP;
