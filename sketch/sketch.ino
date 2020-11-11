@@ -11,8 +11,9 @@ enum direction { LEFT, RIGHT };
 
 // 出力
 const int count = 5;
-const int maxOut = 255;
-const int minOut = -255;
+const int maxOut = 235;
+const int minOut = -235;
+const int diff = 20;
 int motorOut = 0;
 
 // モータードライバー (TA7291P) のピン番号
@@ -80,11 +81,11 @@ void loop() {
         neutral();
     } else if (motorOut > 0) {
         analogWrite(leftOut1, motorOut);
-        analogWrite(rightOut1, motorOut);
+        analogWrite(rightOut1, motorOut + diff);
     } else if (motorOut < 0) {
         int out = motorOut * -1;
         analogWrite(leftOut2, out);
-        analogWrite(rightOut2, out);
+        analogWrite(rightOut2, out + diff);
     }
 }
 
@@ -109,12 +110,12 @@ void makeTurn(direction dir) {
     if (carState == FORWARD) {
         if (dir == LEFT) {
             analogWrite(leftOut1, 0);
-            delay(1000);
+            delay(500);
             analogWrite(leftOut1, motorOut);
         } else {
             analogWrite(rightOut1, 0);
-            delay(1000);
-            analogWrite(rightOut1, motorOut);
+            delay(500);
+            analogWrite(rightOut1, motorOut + diff);
         }
     }
 }
