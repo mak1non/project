@@ -11,9 +11,8 @@ enum direction { LEFT, RIGHT };
 
 // 出力
 const int count = 5;
-const int maxOut = 235;
-const int minOut = -235;
-const int diff = 20;
+const int maxOut = 240;
+const int minOut = -220;
 int motorOut = 0;
 
 // モータードライバー (TA7291P) のピン番号
@@ -48,7 +47,7 @@ void loop() {
         String input = Serial.readStringUntil('\n');
         Serial.println("Read: " + input);
 
-        if (input.substring(0, 1) == '\r') {
+        if (input.substring(0, 1) == "\r") {
             input.remove(0, 1);
         }
 
@@ -81,11 +80,11 @@ void loop() {
         neutral();
     } else if (motorOut > 0) {
         analogWrite(leftOut1, motorOut);
-        analogWrite(rightOut1, motorOut + diff);
+        analogWrite(rightOut1, motorOut);
     } else if (motorOut < 0) {
         int out = motorOut * -1;
         analogWrite(leftOut2, out);
-        analogWrite(rightOut2, out + diff);
+        analogWrite(rightOut2, out);
     }
 }
 
@@ -110,12 +109,12 @@ void makeTurn(direction dir) {
     if (carState == FORWARD) {
         if (dir == LEFT) {
             analogWrite(leftOut1, 0);
-            delay(500);
+            delay(200);
             analogWrite(leftOut1, motorOut);
         } else {
             analogWrite(rightOut1, 0);
-            delay(500);
-            analogWrite(rightOut1, motorOut + diff);
+            delay(200);
+            analogWrite(rightOut1, motorOut);
         }
     }
 }
