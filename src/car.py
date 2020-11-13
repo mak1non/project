@@ -1,5 +1,4 @@
 import serial
-import time
 from direction import Direction
 
 
@@ -63,12 +62,15 @@ class Car:
         elif self.direction is Direction.RIGHT:
             self.arduino.write(b'R')  # 右折
 
+        # 待つ
+        self.arduino.flush()
+
     def dispose(self):
         """シリアル通信を終了する
         """
         # ブレーキする
         self.arduino.write(b'S')
-        time.sleep(0.5)
+        self.arduino.flush()
 
         # 終了する
         print('Serial Close')
