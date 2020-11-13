@@ -42,12 +42,13 @@ def main():
         elif line.state is State.EXIT:
             print('終了')
 
+        # 終了処理
+        car.dispose()
+        line.releaseCam()
+
     # Ctrl + C 押下時にメッセージを表示
     except KeyboardInterrupt:
         print('Keyboard interrupted')
-
-    # 終了時にカメラを開放する
-    finally:
         car.dispose()
         line.releaseCam()
 
