@@ -1,4 +1,5 @@
 import serial
+import time
 from direction import Direction
 
 
@@ -46,10 +47,10 @@ class Car:
         # 状態が変化していなければ出力しない
         if self.preDirection is self.direction:
             return
-        
+
         # 方向を表示
         print(self.direction)
-        
+
         # 各種出力
         if self.direction is Direction.STOP:
             self.arduino.write(b'S')  # 停止
@@ -67,6 +68,7 @@ class Car:
         """
         # ブレーキする
         self.arduino.write(b'S')
+        time.sleep(0.5)
 
         # 終了する
         print('Serial Close')
