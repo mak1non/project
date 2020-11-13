@@ -12,8 +12,10 @@ def main():
 
         serial_out = bytes(user_in, 'utf-8')
         arduino.write(serial_out)
+        arduino.flush()
 
     arduino.write(b'S')
+    arduino.flush()
     arduino.close()
 
 
