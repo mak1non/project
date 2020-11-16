@@ -52,15 +52,15 @@ class Car:
 
         # 各種出力
         if self.direction is Direction.STOP:
-            self.arduino.write(b'S')  # 停止
+            self.arduino.write(b'\x53')  # 停止
         elif self.direction is Direction.FORWARD:
-            self.arduino.write(b'A')  # 前進
+            self.arduino.write(b'\x41')  # 前進
         elif self.direction is Direction.BACKWARD:
-            self.arduino.write(b'B')  # 後退
+            self.arduino.write(b'\x42')  # 後退
         elif self.direction is Direction.LEFT:
-            self.arduino.write(b'L')  # 左折
+            self.arduino.write(b'\x4c')  # 左折
         elif self.direction is Direction.RIGHT:
-            self.arduino.write(b'R')  # 右折
+            self.arduino.write(b'\x52')  # 右折
 
         # 待つ
         self.arduino.flush()
@@ -69,7 +69,7 @@ class Car:
         """シリアル通信を終了する
         """
         # ブレーキする
-        self.arduino.write(b'S')
+        self.arduino.write(b'\x53')
         self.arduino.flush()
 
         # 終了する

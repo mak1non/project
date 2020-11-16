@@ -27,7 +27,13 @@ const int rightOut2 = 5;  // 入力2
 // 走行状態
 state carState = STOP;
 
+// バッファ
+byte buf[3];
+
 void setup() {
+    // タイマーの無効化
+    TIMSK0 = 0;
+    
     // シリアル通信の準備
     Serial.begin(115200);
 
@@ -42,49 +48,46 @@ void setup() {
 }
 
 void loop() {
-    // 入力の読み取り
-    if (Serial.available() > 0) {
-        String input = Serial.readStringUntil('\n');
-        Serial.println("Read: " + input);
-
-        if (input.substring(0, 1) == "\r") {
-            input.remove(0, 1);
+    while (true) {
+        if (Serial.available() > 0) {
+            Serial.readBytesUntil('\n', buf, 1);
+            Serial.println(buf[0]);
+    
+            if (buf[0] == 83) {
+                carState = STOP;  // 停止 (S)
+            } else if (buf[0] == 65) {
+                carState = FORWARD;  // 前進 (A)
+            } else if (buf[0] == 66) {
+                carState = BACKWARD;  // 後退 (B)
+            } else if (buf[0] == 76) {
+                makeTurn(LEFT);  // 左折 (L)
+            } else if (buf[0] == 82) {
+                makeTurn(RIGHT);  // 右折 (R)
+            }
         }
 
-        if (input.substring(0, 1) == "S") {
-            carState = STOP;  // 停止
-        } else if (input.substring(0, 1) == "A") {
-            carState = FORWARD;  // 前進
-        } else if (input.substring(0, 1) == "B") {
-            carState = BACKWARD;  // 後退
-        } else if (input.substring(0, 1) == "L") {
-            makeTurn(LEFT);  // 左折
-        } else if (input.substring(0, 1) == "R") {
-            makeTurn(RIGHT);  // 右折
+        // 現在速度
+        if (carState == STOP && motorOut > 0) {
+            motorOut -= count;
+        } else if (carState == STOP && motorOut < 0) {
+            motorOut += count;
+        } else if (carState == FORWARD && motorOut < maxOut) {
+            motorOut += count;
+        } else if (carState == BACKWARD && motorOut > minOut) {
+            motorOut -= count;
         }
-    }
 
-    // 現在速度
-    if (carState == STOP && motorOut > 0) {
-        motorOut -= count;
-    } else if (carState == STOP && motorOut < 0) {
-        motorOut += count;
-    } else if (carState == FORWARD && motorOut < maxOut) {
-        motorOut += count;
-    } else if (carState == BACKWARD && motorOut > minOut) {
-        motorOut -= count;
-    }
-
-    // 速度の反映
-    if (motorOut == 0) {
-        neutral();
-    } else if (motorOut > 0) {
-        analogWrite(leftOut1, motorOut);
-        analogWrite(rightOut1, motorOut);
-    } else if (motorOut < 0) {
-        int out = motorOut * -1;
-        analogWrite(leftOut2, out);
-        analogWrite(rightOut2, out);
+        // 速度の反映
+        if (motorOut == 0) {
+            neutral();
+        } else if (motorOut > 0) {
+            analogWrite(leftOut1, motorOut);
+            analogWrite(rightOut1, motorOut);
+        } else if (motorOut < 0) {
+            int out = motorOut * -1;
+            analogWrite(leftOut2, out);
+            analogWrite(rightOut2, out);
+        }
     }
 }
 
@@ -109,11 +112,11 @@ void makeTurn(direction dir) {
     if (carState == FORWARD) {
         if (dir == LEFT) {
             analogWrite(leftOut1, 0);
-            delay(200);
+            delay(500);
             analogWrite(leftOut1, motorOut);
         } else {
             analogWrite(rightOut1, 0);
-            delay(200);
+            delay(500);
             analogWrite(rightOut1, motorOut);
         }
     }
