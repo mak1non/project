@@ -60,7 +60,7 @@ void loop() {
                 carState = STOP;
                 carDir = CENTER;
             } else if (buf[0] == 65) {
-                // 後退 (B)
+                // 前進 (A)
                 carState = FORWARD;
                 carDir = CENTER;
             } else if (buf[0] == 66) {
@@ -68,9 +68,11 @@ void loop() {
                 carState = BACKWARD;
                 carDir = CENTER;
             } else if (buf[0] == 76) {
+                // 左折 (L)
                 carState = FORWARD;
                 carDir = LEFT;
             } else if (buf[0] == 82) {
+                // 右折 (R)
                 carState = FORWARD;
                 carDir = RIGHT;
             }
@@ -94,9 +96,11 @@ void loop() {
             if (carDir == LEFT) {
                 analogWrite(leftOut1, 0);
                 analogWrite(rightOut1, motorOut + diff);
+                delay(200);
             } else if (carDir == RIGHT) {
                 analogWrite(leftOut1, motorOut);
                 analogWrite(rightOut1, 0);
+                delay(200);
             } else {
                 analogWrite(leftOut1, motorOut);
                 analogWrite(rightOut1, motorOut + diff);
