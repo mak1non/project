@@ -68,8 +68,10 @@ void loop() {
                 carState = BACKWARD;
                 carDir = CENTER;
             } else if (buf[0] == 76) {
+                carState = FORWARD;
                 carDir = LEFT;
             } else if (buf[0] == 82) {
+                carState = FORWARD;
                 carDir = RIGHT;
             }
         }
