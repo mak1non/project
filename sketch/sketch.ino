@@ -5,14 +5,15 @@
  * https://mak1non.github.io/project/mortar.html
  */
 
-enum state { BACKWARD, FORWARD, STOP };
+enum direction { CENTER, LEFT, RIGHT };
 
-enum direction { LEFT, RIGHT };
+enum state { BACKWARD, FORWARD, STOP };
 
 // 出力
 const int count = 5;
 const int maxOut = 240;
 const int minOut = -220;
+const int diff = 10;
 int motorOut = 0;
 
 // モータードライバー (TA7291P) のピン番号
@@ -25,6 +26,7 @@ const int rightOut1 = 6;  // 入力1
 const int rightOut2 = 5;  // 入力2
 
 // 走行状態
+direction carDir = CENTER;
 state carState = STOP;
 
 // バッファ
@@ -54,15 +56,21 @@ void loop() {
             Serial.println(buf[0]);
     
             if (buf[0] == 83) {
-                carState = STOP;  // 停止 (S)
+                // 停止 (S)
+                carState = STOP;
+                carDir = CENTER;
             } else if (buf[0] == 65) {
-                carState = FORWARD;  // 前進 (A)
+                // 後退 (B)
+                carState = FORWARD;
+                carDir = CENTER;
             } else if (buf[0] == 66) {
-                carState = BACKWARD;  // 後退 (B)
+                // 後退 (B)
+                carState = BACKWARD;
+                carDir = CENTER;
             } else if (buf[0] == 76) {
-                makeTurn(LEFT);  // 左折 (L)
+                carDir = LEFT;
             } else if (buf[0] == 82) {
-                makeTurn(RIGHT);  // 右折 (R)
+                carDir = RIGHT;
             }
         }
 
@@ -81,12 +89,20 @@ void loop() {
         if (motorOut == 0) {
             neutral();
         } else if (motorOut > 0) {
-            analogWrite(leftOut1, motorOut);
-            analogWrite(rightOut1, motorOut);
+            if (carDir == LEFT) {
+                analogWrite(leftOut1, 0);
+                analogWrite(rightOut1, motorOut + diff);
+            } else if (carDir == RIGHT) {
+                analogWrite(leftOut1, motorOut);
+                analogWrite(rightOut1, 0);
+            } else {
+                analogWrite(leftOut1, motorOut);
+                analogWrite(rightOut1, motorOut + diff);
+            }
         } else if (motorOut < 0) {
             int out = motorOut * -1;
             analogWrite(leftOut2, out);
-            analogWrite(rightOut2, out);
+            analogWrite(rightOut2, out + diff);
         }
     }
 }
@@ -100,24 +116,4 @@ void neutral() {
     digitalWrite(rightOut1, LOW);
     digitalWrite(rightOut2, LOW);
     delay(1000);
-}
-
-/*
- * 曲がる (TODO)
- *
- * dir: 曲がる方向
- */
-void makeTurn(direction dir) {
-    // 前進中のみ実行
-    if (carState == FORWARD) {
-        if (dir == LEFT) {
-            analogWrite(leftOut1, 0);
-            delay(500);
-            analogWrite(leftOut1, motorOut);
-        } else {
-            analogWrite(rightOut1, 0);
-            delay(500);
-            analogWrite(rightOut1, motorOut);
-        }
-    }
 }
