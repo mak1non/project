@@ -18,18 +18,19 @@ class Car:
         # シリアル通信の準備
         self.arduino = serial.Serial(port=port, baudrate=baud)
 
-    def judgeLine(self, leftBlock, rightBlock):
+    def judgeLine(self, centerBlock, leftBlock, rightBlock):
         """線に合わせて進行方向を変える (line.py も参照)
         
         Args:
+            centerBlock (int): 中央ブロックエリアの白 px 数
             leftBlock (int): 左ブロックエリアの白 px 数
             rightBlock (int): 右ブロックエリアの白 px 数
         """
         # 前の状態を保存する
         self.preDirection = self.direction
 
-        if leftBlock > 0 and rightBlock > 0:
-            # 左右どちらも線がある場合
+        if centerBlock > 0 and leftBlock > 0 and rightBlock > 0:
+            # 中央
             self.direction = Direction.STOP
         elif leftBlock > 0:
             # 左に線が寄っている場合
@@ -37,8 +38,9 @@ class Car:
         elif rightBlock > 0:
             # 右に線が寄っている場合
             self.direction = Direction.RIGHT
-        else:
-            # 何も無い場合
+        elif centerBlock > 0:
+            # 中央
+            # 線が見つからない時は、事前の状態を続けるため、この処理は動かない
             self.direction = Direction.FORWARD
 
     def run(self):

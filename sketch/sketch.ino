@@ -14,6 +14,7 @@ const int count = 5;
 const int maxOut = 240;
 const int minOut = -220;
 const int diff = 10;
+const int curveInv = 10;
 int motorOut = 0;
 
 // モータードライバー (TA7291P) のピン番号
@@ -30,7 +31,7 @@ direction carDir = CENTER;
 state carState = STOP;
 
 // バッファ
-byte buf[3];
+byte buf[2];
 
 void setup() {
     // タイマーの無効化
@@ -45,7 +46,7 @@ void setup() {
     pinMode(rightOut1, OUTPUT);
     pinMode(rightOut2, OUTPUT);
 
-    neutral();
+    neutral(500);
     Serial.println("Ready.");
 }
 
@@ -69,10 +70,12 @@ void loop() {
                 carDir = CENTER;
             } else if (buf[0] == 76) {
                 // 左折 (L)
+                neutral(200);
                 carState = FORWARD;
                 carDir = LEFT;
             } else if (buf[0] == 82) {
                 // 右折 (R)
+                neutral(200);
                 carState = FORWARD;
                 carDir = RIGHT;
             }
@@ -91,16 +94,14 @@ void loop() {
 
         // 速度の反映
         if (motorOut == 0) {
-            neutral();
+            neutral(500);
         } else if (motorOut > 0) {
             if (carDir == LEFT) {
-                analogWrite(leftOut1, 0);
-                analogWrite(rightOut1, motorOut + diff);
-                delay(200);
+                analogWrite(leftOut2, curveInv);
+                analogWrite(rightOut1, motorOut - 80);
             } else if (carDir == RIGHT) {
-                analogWrite(leftOut1, motorOut);
-                analogWrite(rightOut1, 0);
-                delay(200);
+                analogWrite(rightOut2, curveInv);
+                analogWrite(leftOut1, motorOut - 80);
             } else {
                 analogWrite(leftOut1, motorOut);
                 analogWrite(rightOut1, motorOut + diff);
@@ -116,10 +117,26 @@ void loop() {
 /*
  * 初期化
  */
-void neutral() {
-    digitalWrite(leftOut1, LOW);
-    digitalWrite(leftOut2, LOW);
-    digitalWrite(rightOut1, LOW);
-    digitalWrite(rightOut2, LOW);
-    delay(1000);
+void neutral(int wait) {
+    if (motorOut > 0) {
+        analogWrite(leftOut2, 0);
+        analogWrite(rightOut2, 0);
+        for (int i = motorOut; i > 0; i -= 5) {
+            analogWrite(leftOut1, i);
+            analogWrite(rightOut1, i);
+        }
+    } else if (motorOut < 0) {
+        analogWrite(leftOut1, 0);
+        analogWrite(rightOut1, 0);
+        for (int i = (motorOut * -1); i > 0; i -= 5) {
+            analogWrite(leftOut2, i);
+            analogWrite(rightOut2, i);
+        }
+    } else {
+        analogWrite(leftOut1, 0);
+        analogWrite(leftOut2, 0);
+        analogWrite(rightOut1, 0);
+        analogWrite(rightOut2, 0);
+    }
+    delay(wait);
 }

@@ -50,6 +50,9 @@ class Line:
                                             self.cfg.maxValue,
                                             cv2.THRESH_BINARY_INV)
         if ret:
+            # 中央ブロックエリアのフレームをセット
+            centerBlock = self.binaryImg[
+                0:self.cfg.trimH, self.cfg.leftArea[1]:self.cfg.rightArea[0]]
             # 左ブロックエリアのフレームをセット
             leftBlock = self.binaryImg[
                 0:self.cfg.trimH, self.cfg.leftArea[0]:self.cfg.leftArea[1]]
@@ -57,6 +60,8 @@ class Line:
             rightBlock = self.binaryImg[
                 0:self.cfg.trimH, self.cfg.rightArea[0]:self.cfg.rightArea[1]]
 
+            # 中央ブロックエリアの白ピクセルカウント
+            self.detCB = cv2.countNonZero(centerBlock)
             # 左ブロックエリアの白ピクセルカウント
             self.detLB = cv2.countNonZero(leftBlock)
             # 右ブロックエリアの白ピクセルカウント

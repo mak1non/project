@@ -33,7 +33,7 @@ def main():
             line.showImg()
 
             # 判定
-            car.judgeLine(line.detLB, line.detRB)
+            car.judgeLine(line.detCB, line.detLB, line.detRB)
             car.run()
 
         # エラー時の表示
