@@ -1,4 +1,5 @@
 import serial
+import time
 from direction import Direction
 
 
@@ -58,8 +59,12 @@ class Car:
         elif self.direction is Direction.BACKWARD:
             self.arduino.write(b'\x42')  # 後退
         elif self.direction is Direction.LEFT:
+            self.arduino.write(b'\x53')  # 停止
+            time.sleep(1)
             self.arduino.write(b'\x4c')  # 左折
         elif self.direction is Direction.RIGHT:
+            self.arduino.write(b'\x53')  # 停止
+            time.sleep(1)
             self.arduino.write(b'\x52')  # 右折
 
         # 待つ
