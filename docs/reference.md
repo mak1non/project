@@ -12,6 +12,9 @@ https://www.instructables.com/Interface-Python-and-Arduino-with-pySerial/
 
 ## OpenCV
 
+【寄稿】ぼくの大学院生活を捧げた自動運転ミニカー製作の全て　工学院大学修士1年・鈴木将 | 自動運転ラボ
+https://jidounten-lab.com/z_autonomous-mini-car-suzuki-sho
+
 OpenCV 入門編（画像処理と Python）
 https://code-graffiti.com/introduction-to-opencv-in-python/
 
