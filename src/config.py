@@ -37,14 +37,14 @@ class Config:
         config['binary'] = {'threshold': 64, 'maxValue': 255}
 
         # トリミングサイズ
-        config['trim'] = {'y_coordinate': 180, 'height': 30}
+        config['trim'] = {'y_coordinate': 420, 'height': 30}
 
         # 左右ブロックエリア
         config['area'] = {
-            'L_start': 200,
-            'L_end': 210,
-            'R_start': 400,
-            'R_end': 410
+            'L_start': 40,
+            'L_end': 130,
+            'R_start': 410,
+            'R_end': 500
         }
 
         # 設定の書き込み
