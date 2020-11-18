@@ -7,3 +7,4 @@ class State(Enum):
     ERROR = auto()
     EXIT = auto()
     NORMAL = auto()
+    STANDBY = auto()

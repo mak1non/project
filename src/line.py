@@ -10,7 +10,7 @@ class Line:
         self.cfg = Config()
 
         # 状態
-        self.state = State.NORMAL
+        self.state = State.STANDBY
         self.error = ''
 
         # カメラ取得
@@ -21,13 +21,17 @@ class Line:
         # 初期化
         self.origImg = None
         self.binaryImg = None
+        self.detCB = 0
         self.detLB = 0
         self.detRB = 0
 
-    def detectLine(self):
+    def detectLine(self, onlyShow=False):
         """線を認識する
         線が左右ブロックエリアに何 px 入っているのかをカウントし、
         それぞれ self.leftBlock と self.rightBlock に格納する
+
+        Args:
+            onlyShow (bool, optional): 撮影のみ行う (デフォルト: False)
         """
         # 白黒画像
         grayImg = None
@@ -59,6 +63,10 @@ class Line:
             # 右ブロックエリアのフレームをセット
             rightBlock = self.binaryImg[
                 0:self.cfg.trimH, self.cfg.rightArea[0]:self.cfg.rightArea[1]]
+
+            # 撮影のみの場合はカウントはしない
+            if onlyShow:
+                return
 
             # 中央ブロックエリアの白ピクセルカウント
             self.detCB = cv2.countNonZero(centerBlock)
@@ -104,7 +112,10 @@ class Line:
             key = cv2.waitKey(1) & 0xFF
 
             # キーの判別
-            if key is ord('s') or key is ord('S'):
+            if key is ord('a') or key is ord('A'):
+                # 開始
+                self.state = State.NORMAL
+            elif key is ord('s') or key is ord('S'):
                 self.saveImg()
             elif key is ord('q') or key is ord('Q'):
                 # 終了

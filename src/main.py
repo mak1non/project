@@ -23,10 +23,22 @@ def main():
     # モーター操作の準備
     car = Car()
 
+    print("""
+--- 操作方法 ---
+[A]: 開始
+[S]: 画像撮影
+[Q]: 終了
+""")
+
     # シリアル通信の準備を待つ
     time.sleep(2)
 
     try:
+        while line.state is State.STANDBY:
+            # 表示のみ
+            line.detectLine(onlyShow=True)
+            line.showImg()
+
         while line.state is State.NORMAL:
             # 線の認識
             line.detectLine()
