@@ -109,7 +109,7 @@ class Line:
             cv2.imshow('Sensor', self.binaryImg)
 
             # 1000ms / 30fps (Camera) = 33.3(...)
-            key = cv2.waitKey(1) & 0xFF
+            key = cv2.waitKey(30) & 0xFF
 
             # キーの判別
             if key is ord('a') or key is ord('A'):
