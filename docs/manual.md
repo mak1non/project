@@ -24,7 +24,7 @@ Raspberry Pi 4 Model B を動作させるため、[Raspberry Pi OS](https://www.
 
 ### SD カードへの OS の書き込み
 
-GNU/Linuxでは、以下のコマンドで書き込みをする事ができる。
+GNU/Linux では、以下のコマンドで書き込みをする事ができる。
 
 ```
 # dd bs=1M if=<Raspberry Pi OS のイメージファイル> of=<SDカード (例: /dev/sdb)>
@@ -40,15 +40,15 @@ Windows では、Rufus のようなソフトウェアを使用して書き込む
 
 ![](img/raspi-setup-1.jpg)
 
-セットアップ後、端末エミュレータを開き、以下のコマンドを入力して、実行環境の準備を行う。
-
-![](img/raspi-setup-2.jpg)
+セットアップ後、端末エミュレータを開き、以下のコマンドを入力して、実行環境の準備を行う (手動で入力するのは大変なので、コピー/ペーストする事を強く推奨する)。これにより、Python3 と OpenCV に必要なソフトウェアを取得する。
 
 ```
 # apt update
 # apt upgrade
 # apt install python3 python3-pip python3-venv libaom0 libatk-bridge2.0-0 libatk1.0-0 libatlas3-base libatspi2.0-0 libavcodec58 libavformat58 libavutil56 libbluray2 libcairo-gobject2 libcairo2 libchromaprint1 libcodec2-0.8.1 libcroco3 libdatrie1 libdrm2 libepoxy0 libfontconfig1 libgdk-pixbuf2.0-0 libgfortran5 libgme0 libgraphite2-3 libgsm1 libgtk-3-0 libharfbuzz0b libilmbase23 libjbig0 libmp3lame0 libmpg123-0 libogg0 libopenexr23 libopenjp2-7 libopenmpt0 libopus0 libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpixman-1-0 librsvg2-2 libshine3 libsnappy1v5 libsoxr0 libspeex1 libssh-gcrypt-4 libswresample3 libswscale5 libthai0 libtheora0 libtiff5 libtwolame0 libva-drm2 libva-x11-2 libva2 libvdpau1 libvorbis0a libvorbisenc2 libvorbisfile3 libvpx5 libwavpack1 libwayland-client0 libwayland-cursor0 libwayland-egl1 libwebp6 libwebpmux3 libx264-155 libx265-165 libxcb-render0 libxcb-shm0 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 libxinerama1 libxkbcommon0 libxrandr2 libxrender1 libxvidcore4 libzvbi0
 ```
+
+![](img/raspi-setup-2.jpg)
 
 ### コードの準備
 
@@ -66,6 +66,8 @@ $ git pull origin master
 
 ### Python3 仮想環境の準備
 
+Python から OpenCV を使用するためのライブラリをインストールするが、その際、venv と呼ばれる Python 用の仮想環境を作成し、その中にインストールする事を強く推奨する。以下のコマンドをコードの存在するディレクトリ上で実行することで仮想環境の作成、必要なライブラリの取得が可能である。
+
 ```
 $ python3 -m venv .venv
 $ source .venv/bin/activate
@@ -76,7 +78,7 @@ $ pip install -r requirements.txt
 
 <h2 id="arduino-setup">Arduino UNO のセットアップ</h2>
 
-模型車両の制御には、Arduino UNO を利用する。この項では、セットアップ手順を示す。
+模型車両 (モーター) の制御には、Arduino UNO を利用する。この項では、セットアップ手順を示す。
 
 ### 開発環境の準備
 
@@ -97,6 +99,8 @@ $ cd arduino-<バージョン番号>
 
 最後の `arduino-linux-setup.sh` 内での設定を反映させるため、一度 PC を再起動する必要がある。
 
+MacOS を使用する場合は、Arduino 公式のドキュメントを参照すること。
+
 ### プログラムの書き込み
 
 まず、スケッチを読み込む。
@@ -111,7 +115,7 @@ $ cd arduino-<バージョン番号>
 | Port       | /dev/<接続先> (Arduino Uno) |
 | Programmer | AVRISP mkII                 |
 
-設定した後、1度 `Sketch -> Verify/Compile` を実行し、プログラムの構文が問題無い事を確認する。確認後、`Sketch -> Upload` でArduino UNO へプログラムを書き込む。
+設定した後、1 度 `Sketch -> Verify/Compile` を実行し、プログラムの構文が問題無い事を確認する。確認後、`Sketch -> Upload` で Arduino UNO へプログラムを書き込む。
 
 ![](img/arduino-write-2.png)
 
