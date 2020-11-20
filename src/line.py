@@ -29,6 +29,11 @@ class Line:
 
         Args:
             onlyShow (bool, optional): 撮影のみ行う (デフォルト: False)
+
+        Returns:
+            int: 中央ブロックエリアの白ピクセルカウント
+            int: 左ブロックエリアの白ピクセルカウント
+            int: 右ブロックエリアの白ピクセルカウント
         """
         # 白黒画像
         grayImg = None
