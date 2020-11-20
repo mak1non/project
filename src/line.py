@@ -73,9 +73,11 @@ class Line:
             detRB = cv2.countNonZero(rightBlock)
 
             return detCB, detLB, detRB
-        else:
-            self.state = State.ERROR
-            self.error = '画像の2値化失敗'
+
+        self.state = State.ERROR
+        self.error = '画像の2値化失敗'
+
+        return 0, 0, 0
 
     def imgCheck(self):
         """detectLine() より前に呼ばれたらエラーを表示する
