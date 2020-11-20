@@ -14,7 +14,7 @@ const int count = 5;
 const int maxOut = 240;
 const int minOut = -220;
 const int diff = 10;
-const int curveInv = 10;
+const int curveInv = 50;
 int motorOut = 0;
 
 // モータードライバー (TA7291P) のピン番号
