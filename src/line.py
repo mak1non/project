@@ -35,16 +35,17 @@ class Line:
 
         # 画像を取得
         ret, self.origImg = self.camera.read()
-        if ret is True:
-            # 画像をトリミング
-            trimImg = self.origImg[self.cfg.trimY:self.cfg.trimY +
-                                   self.cfg.trimH, ]
-
-            # グレースケール化
-            grayImg = cv2.cvtColor(trimImg, cv2.COLOR_BGR2GRAY)
-        else:
+        if ret is not True:
             self.state = State.ERROR
             self.error = '画像取得失敗'
+            return 1, 1, 1
+
+        # 画像をトリミング
+        trimImg = self.origImg[self.cfg.trimY:self.cfg.trimY +
+                               self.cfg.trimH, ]
+
+        # グレースケール化
+        grayImg = cv2.cvtColor(trimImg, cv2.COLOR_BGR2GRAY)
 
         # 画像の2値化
         ret, self.binaryImg = cv2.threshold(grayImg, self.cfg.threshold,
@@ -63,7 +64,7 @@ class Line:
 
             # 撮影のみの場合はカウントはしない
             if onlyShow:
-                return
+                return 1, 1, 1
 
             # 中央ブロックエリアの白ピクセルカウント
             detCB = cv2.countNonZero(centerBlock)
@@ -76,8 +77,7 @@ class Line:
 
         self.state = State.ERROR
         self.error = '画像の2値化失敗'
-
-        return 0, 0, 0
+        return 1, 1, 1
 
     def imgCheck(self):
         """detectLine() より前に呼ばれたらエラーを表示する
