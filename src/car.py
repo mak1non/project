@@ -25,16 +25,18 @@ class Car:
         self.arduino = serial.Serial(port=self.port, baudrate=self.baudrate)
         return self
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_value, trace):
         """シリアル通信を終了する
         """
+        print('Serial Close', exc_type, exc_value, trace)
+
         # ブレーキする
         self.arduino.write(b'\x53')
         self.arduino.flush()
 
         # 終了する
-        print('Serial Close')
         self.arduino.close()
+        return True
 
     def judgeLine(self, centerBlock, leftBlock, rightBlock):
         """線に合わせて進行方向を変える (line.py も参照)
