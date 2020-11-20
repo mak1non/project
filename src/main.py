@@ -41,11 +41,11 @@ def main():
 
         while line.state is State.NORMAL:
             # 線の認識
-            line.detectLine()
+            detCB, detLB, detRB = line.detectLine()
             line.showImg()
 
             # 判定
-            car.judgeLine(line.detCB, line.detLB, line.detRB)
+            car.judgeLine(detCB, detLB, detRB)
             car.run()
 
         # エラー時の表示

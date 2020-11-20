@@ -21,9 +21,6 @@ class Line:
         # 初期化
         self.origImg = None
         self.binaryImg = None
-        self.detCB = 0
-        self.detLB = 0
-        self.detRB = 0
 
     def detectLine(self, onlyShow=False):
         """線を認識する
@@ -69,11 +66,13 @@ class Line:
                 return
 
             # 中央ブロックエリアの白ピクセルカウント
-            self.detCB = cv2.countNonZero(centerBlock)
+            detCB = cv2.countNonZero(centerBlock)
             # 左ブロックエリアの白ピクセルカウント
-            self.detLB = cv2.countNonZero(leftBlock)
+            detLB = cv2.countNonZero(leftBlock)
             # 右ブロックエリアの白ピクセルカウント
-            self.detRB = cv2.countNonZero(rightBlock)
+            detRB = cv2.countNonZero(rightBlock)
+
+            return detCB, detLB, detRB
         else:
             self.state = State.ERROR
             self.error = '画像の2値化失敗'
@@ -133,11 +132,6 @@ class Line:
             # 写真の撮影
             cv2.imwrite('pictures/' + time + '_orig.jpg', self.origImg)
             cv2.imwrite('pictures/' + time + '_binary.jpg', self.binaryImg)
-
-    def printDetect(self):
-        """カメラの認識値を表示する (テスト用)
-        """
-        print('detLB : ' + str(self.detLB) + ' detRB: ' + str(self.detRB))
 
     def releaseCam(self):
         """カメラを閉じる
