@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import time
 from car import Car
 from line import Line
@@ -18,7 +17,7 @@ def main():
     # カメラ取得チェック
     if line.camera.isOpened() is False:
         print("Can't open camera.")
-        sys.exit(1)  # プログラム終了
+        return
 
     # モーター操作の準備
     with Car() as car:
@@ -46,6 +45,9 @@ def main():
             print('エラー: ' + line.error)
         elif line.state is State.EXIT:
             print('終了')
+
+    # カメラを閉じる
+    line.releaseCam()
 
 
 # 直接起動時のみ処理を実行する
