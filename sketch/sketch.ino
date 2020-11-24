@@ -14,7 +14,6 @@ const int count = 5;
 const int maxOut = 240;
 const int minOut = -220;
 const int diff = 10;
-const int curveInv = 50;
 int motorOut = 0;
 
 // モータードライバー (TA7291P) のピン番号
@@ -97,10 +96,8 @@ void loop() {
             neutral(500);
         } else if (motorOut > 0) {
             if (carDir == LEFT) {
-                analogWrite(leftOut2, curveInv);
                 analogWrite(rightOut1, motorOut - 80);
             } else if (carDir == RIGHT) {
-                analogWrite(rightOut2, curveInv);
                 analogWrite(leftOut1, motorOut - 80);
             } else {
                 analogWrite(leftOut1, motorOut);
