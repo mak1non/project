@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import time
 from car import Car
 from line import Line
@@ -18,22 +17,15 @@ def main():
     # カメラ取得チェック
     if line.camera.isOpened() is False:
         print("Can't open camera.")
-        sys.exit(1)  # プログラム終了
+        return
 
     # モーター操作の準備
-    car = Car()
+    with Car() as car:
+        print("\n--- 操作方法 ---\n[A]: 開始\n[S]: 画像撮影\n[Q]: 終了")
 
-    print("""
---- 操作方法 ---
-[A]: 開始
-[S]: 画像撮影
-[Q]: 終了
-""")
+        # シリアル通信の準備を待つ
+        time.sleep(2)
 
-    # シリアル通信の準備を待つ
-    time.sleep(2)
-
-    try:
         while line.state is State.STANDBY:
             # 表示のみ
             line.detectLine(onlyShow=True)
@@ -54,15 +46,8 @@ def main():
         elif line.state is State.EXIT:
             print('終了')
 
-        # 終了処理
-        car.dispose()
-        line.releaseCam()
-
-    # Ctrl + C 押下時にメッセージを表示
-    except KeyboardInterrupt:
-        print('Keyboard interrupted')
-        car.dispose()
-        line.releaseCam()
+    # カメラを閉じる
+    line.releaseCam()
 
 
 # 直接起動時のみ処理を実行する

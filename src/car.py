@@ -4,7 +4,7 @@ from direction import Direction
 
 
 class Car:
-    def __init__(self, port='/dev/ttyACM0', baud=115200):
+    def __init__(self, port='/dev/ttyACM0', baudrate=115200):
         """Arduino に指示を出すクラス
 
         Args:
@@ -15,8 +15,28 @@ class Car:
         self.preDirection = Direction.STOP
         self.direction = Direction.STOP
 
-        # シリアル通信の準備
-        self.arduino = serial.Serial(port=port, baudrate=baud)
+        # シリアル通信の設定値
+        self.port = port
+        self.baudrate = baudrate
+
+    def __enter__(self):
+        """シリアル通信の準備
+        """
+        self.arduino = serial.Serial(port=self.port, baudrate=self.baudrate)
+        return self
+
+    def __exit__(self, exc_type, exc_value, trace):
+        """シリアル通信を終了する
+        """
+        print('Serial Close', exc_type, exc_value, trace)
+
+        # ブレーキする
+        self.arduino.write(b'\x53')
+        self.arduino.flush()
+
+        # 終了する
+        self.arduino.close()
+        return True
 
     def judgeLine(self, centerBlock, leftBlock, rightBlock):
         """線に合わせて進行方向を変える (line.py も参照)
@@ -71,14 +91,3 @@ class Car:
 
         # 待つ
         self.arduino.flush()
-
-    def dispose(self):
-        """シリアル通信を終了する
-        """
-        # ブレーキする
-        self.arduino.write(b'\x53')
-        self.arduino.flush()
-
-        # 終了する
-        print('Serial Close')
-        self.arduino.close()
