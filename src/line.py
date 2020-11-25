@@ -122,6 +122,10 @@ class Line:
                 # 開始
                 self.state = State.NORMAL
             elif key is ord('s') or key is ord('S'):
+                # 停止
+                self.state = State.STANDBY
+            elif key is ord('p') or key is ord('P'):
+                # 画像の保存
                 self.saveImg()
             elif key is ord('q') or key is ord('Q'):
                 # 終了

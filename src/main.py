@@ -26,28 +26,29 @@ def main():
         # シリアル通信の準備を待つ
         time.sleep(2)
 
-        while line.state is State.STANDBY:
-            # 表示のみ
-            line.detectLine(onlyShow=True)
-            line.showImg()
+        while True:
+            if line.state is State.STANDBY:
+                # 表示のみ
+                line.detectLine(onlyShow=True)
+                line.showImg()
+            elif line.state is State.NORMAL:
+                # 線の認識
+                detCB, detLB, detRB = line.detectLine()
+                line.showImg()
 
-        while line.state is State.NORMAL:
-            # 線の認識
-            detCB, detLB, detRB = line.detectLine()
-            line.showImg()
+                # 判定
+                car.judgeLine(detCB, detLB, detRB)
+                car.run()
+            elif line.state is State.ERROR:
+                # エラー時の表示
+                print('エラー: ' + line.error)
+                break
+            elif line.state is State.EXIT:
+                print('終了')
+                break
 
-            # 判定
-            car.judgeLine(detCB, detLB, detRB)
-            car.run()
-
-        # エラー時の表示
-        if line.state is State.ERROR:
-            print('エラー: ' + line.error)
-        elif line.state is State.EXIT:
-            print('終了')
-
-    # カメラを閉じる
-    line.releaseCam()
+        # カメラを閉じる
+        line.releaseCam()
 
 
 # 直接起動時のみ処理を実行する
