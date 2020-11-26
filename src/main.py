@@ -21,7 +21,7 @@ def main():
 
     # モーター操作の準備
     with Car() as car:
-        print("\n--- 操作方法 ---\n[A]: 開始\n[S]: 画像撮影\n[Q]: 終了")
+        print("\n--- 操作方法 ---\n[A]: 開始\n[S]: 一時停止\n[P]: 画像撮影\n[Q]: 終了")
 
         # シリアル通信の準備を待つ
         time.sleep(2)
@@ -31,14 +31,16 @@ def main():
                 # 表示のみ
                 line.detectLine(onlyShow=True)
                 line.showImg()
+
+                # 停止
+                car.run(1, 1, 1)
             elif line.state is State.NORMAL:
                 # 線の認識
                 detCB, detLB, detRB = line.detectLine()
                 line.showImg()
 
                 # 判定
-                car.judgeLine(detCB, detLB, detRB)
-                car.run()
+                car.run(detCB, detLB, detRB)
             elif line.state is State.ERROR:
                 # エラー時の表示
                 print('エラー: ' + line.error)
