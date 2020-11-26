@@ -38,8 +38,8 @@ class Car:
         self.arduino.close()
         return True
 
-    def judgeLine(self, centerBlock, leftBlock, rightBlock):
-        """線に合わせて進行方向を変える (line.py も参照)
+    def run(self, centerBlock, leftBlock, rightBlock):
+        """線に合わせて走行する (line.py も参照)
         
         Args:
             centerBlock (int): 中央ブロックエリアの白 px 数
@@ -63,7 +63,9 @@ class Car:
             # 線が見つからない時は、事前の状態を続けるため、この処理は動かない
             self.direction = Direction.FORWARD
 
-    def run(self):
+        self.__send()
+
+    def __send(self):
         """Arduino に指示を出す
         """
         # 状態が変化していなければ出力しない
