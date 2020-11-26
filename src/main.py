@@ -21,7 +21,7 @@ def main():
 
     # モーター操作の準備
     with Car() as car:
-        print("\n--- 操作方法 ---\n[A]: 開始\n[S]: 一時停止\n[P]: 画像撮影\n[Q]: 終了")
+        print("\n--- 操作方法 ---\n[A]: 開始\n[S]: 一時停止\n[P]: 画像撮影\n[Q]: 終了\n")
 
         # シリアル通信の準備を待つ
         time.sleep(2)
@@ -49,8 +49,8 @@ def main():
                 print('終了')
                 break
 
-        # カメラを閉じる
-        line.releaseCam()
+    # カメラを閉じる
+    line.releaseCam()
 
 
 # 直接起動時のみ処理を実行する
