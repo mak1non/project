@@ -28,7 +28,7 @@ def main():
         time.sleep(2)
 
         # シリアル通信は並列で行う
-        with ThreadPoolExecutor() as executor:
+        with ThreadPoolExecutor(max_workers=1) as executor:
             while True:
                 if line.state is State.STANDBY:
                     # 表示のみ
