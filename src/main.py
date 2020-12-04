@@ -2,6 +2,7 @@
 
 import os
 import time
+from concurrent.futures import ThreadPoolExecutor
 from car import Car
 from line import Line
 from state import State
@@ -26,28 +27,30 @@ def main():
         # シリアル通信の準備を待つ
         time.sleep(2)
 
-        while True:
-            if line.state is State.STANDBY:
-                # 表示のみ
-                line.detectLine(onlyShow=True)
-                line.showImg()
+        # シリアル通信は並列で行う
+        with ThreadPoolExecutor() as executor:
+            while True:
+                if line.state is State.STANDBY:
+                    # 表示のみ
+                    line.detectLine(onlyShow=True)
+                    line.showImg()
 
-                # 停止
-                car.run(1, 1, 1)
-            elif line.state is State.NORMAL:
-                # 線の認識
-                detCB, detLB, detRB = line.detectLine()
-                line.showImg()
+                    # 停止
+                    executor.submit(car.run, 1, 1, 1)
+                elif line.state is State.NORMAL:
+                    # 線の認識
+                    detCB, detLB, detRB = line.detectLine()
+                    line.showImg()
 
-                # 判定
-                car.run(detCB, detLB, detRB)
-            elif line.state is State.ERROR:
-                # エラー時の表示
-                print('エラー: ' + line.error)
-                break
-            elif line.state is State.EXIT:
-                print('終了')
-                break
+                    # 判定
+                    executor.submit(car.run, detCB, detLB, detRB)
+                elif line.state is State.ERROR:
+                    # エラー時の表示
+                    print('エラー: ' + line.error)
+                    break
+                elif line.state is State.EXIT:
+                    print('終了')
+                    break
 
     # カメラを閉じる
     line.releaseCam()
