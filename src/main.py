@@ -4,6 +4,7 @@ import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from car import Car
+from direction import Direction
 from line import Line
 from state import State
 
@@ -36,14 +37,14 @@ def main():
                     line.showImg()
 
                     # 停止
-                    executor.submit(car.run, 1, 1, 1)
+                    executor.submit(car.run, Direction.STOP)
                 elif line.state is State.NORMAL:
                     # 線の認識
-                    detCB, detLB, detRB = line.detectLine()
+                    direction = line.detectLine()
                     line.showImg()
 
                     # 判定
-                    executor.submit(car.run, detCB, detLB, detRB)
+                    executor.submit(car.run, direction)
                 elif line.state is State.ERROR:
                     # エラー時の表示
                     print('エラー: ' + line.error)

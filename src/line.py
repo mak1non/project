@@ -1,6 +1,7 @@
 import cv2
 import datetime
 from config import Config
+from direction import Direction
 from state import State
 
 
@@ -31,9 +32,7 @@ class Line:
             onlyShow (bool, optional): 撮影のみ行う (デフォルト: False)
 
         Returns:
-            int: 中央ブロックエリアの白ピクセルカウント
-            int: 左ブロックエリアの白ピクセルカウント
-            int: 右ブロックエリアの白ピクセルカウント
+            Direction: 進行方向
         """
         # 白黒画像
         grayImg = None
@@ -43,7 +42,7 @@ class Line:
         if ret is not True:
             self.state = State.ERROR
             self.error = '画像取得失敗'
-            return 1, 1, 1
+            return Direction.STOP
 
         # 画像をトリミング
         trimImg = self.origImg[self.cfg.trimY:self.cfg.trimY +
@@ -69,7 +68,7 @@ class Line:
 
             # 撮影のみの場合はカウントはしない
             if onlyShow:
-                return 1, 1, 1
+                return Direction.STOP
 
             # 中央ブロックエリアの白ピクセルカウント
             detCB = cv2.countNonZero(centerBlock)
@@ -78,11 +77,35 @@ class Line:
             # 右ブロックエリアの白ピクセルカウント
             detRB = cv2.countNonZero(rightBlock)
 
-            return detCB, detLB, detRB
+            direction = self.__dirSelect(detCB, detLB, detRB)
+            return direction
 
         self.state = State.ERROR
         self.error = '画像の2値化失敗'
-        return 1, 1, 1
+        return Direction.STOP
+
+    def __dirSelect(self, centerBlock, leftBlock, rightBlock):
+        """進行方向の決定
+
+        Args:
+            centerBlock (int): 中央ブロックエリアの白ピクセル数
+            leftBlock (int): 左ブロックエリアの白ピクセル数
+            rightBlock (int): 右ブロックエリアの白ピクセル数
+        """
+        if centerBlock > 0 and leftBlock > 0 and rightBlock > 0:
+            # 停止線
+            self.state = State.STANDBY
+            return Direction.STOP
+        elif leftBlock > 0:
+            # 左に線が寄っている場合
+            return Direction.LEFT
+        elif rightBlock > 0:
+            # 右に線が寄っている場合
+            return Direction.RIGHT
+        elif centerBlock > 0:
+            # 中央
+            # 線が見つからない時は、事前の状態を続けるため、この処理は動かない
+            return Direction.FORWARD
 
     def imgCheck(self):
         """detectLine() より前に呼ばれたらエラーを表示する

@@ -13,7 +13,6 @@ class Car:
         """
         # 初期化
         self.preDirection = Direction.STOP
-        self.direction = Direction.STOP
 
         # シリアル通信の設定値
         self.port = port
@@ -38,58 +37,34 @@ class Car:
         self.arduino.close()
         return True
 
-    def run(self, centerBlock, leftBlock, rightBlock):
-        """線に合わせて走行する (line.py も参照)
-        
-        Args:
-            centerBlock (int): 中央ブロックエリアの白 px 数
-            leftBlock (int): 左ブロックエリアの白 px 数
-            rightBlock (int): 右ブロックエリアの白 px 数
-        """
-        # 前の状態を保存する
-        self.preDirection = self.direction
-
-        if centerBlock > 0 and leftBlock > 0 and rightBlock > 0:
-            # 中央
-            self.direction = Direction.STOP
-        elif leftBlock > 0:
-            # 左に線が寄っている場合
-            self.direction = Direction.LEFT
-        elif rightBlock > 0:
-            # 右に線が寄っている場合
-            self.direction = Direction.RIGHT
-        elif centerBlock > 0:
-            # 中央
-            # 線が見つからない時は、事前の状態を続けるため、この処理は動かない
-            self.direction = Direction.FORWARD
-
-        self.__send()
-
-    def __send(self):
+    def run(self, direction):
         """Arduino に指示を出す
         """
         # 状態が変化していなければ出力しない
-        if self.preDirection is self.direction:
+        if self.preDirection is direction:
             return
 
         # 方向を表示
-        print(self.direction)
+        print(direction)
 
         # 各種出力
-        if self.direction is Direction.STOP:
+        if direction is Direction.STOP:
             self.arduino.write(b'\x53')  # 停止
-        elif self.direction is Direction.FORWARD:
+        elif direction is Direction.FORWARD:
             self.arduino.write(b'\x41')  # 前進
-        elif self.direction is Direction.BACKWARD:
+        elif direction is Direction.BACKWARD:
             self.arduino.write(b'\x42')  # 後退
-        elif self.direction is Direction.LEFT:
+        elif direction is Direction.LEFT:
             self.arduino.write(b'\x53')  # 停止
             time.sleep(1)
             self.arduino.write(b'\x4c')  # 左折
-        elif self.direction is Direction.RIGHT:
+        elif direction is Direction.RIGHT:
             self.arduino.write(b'\x53')  # 停止
             time.sleep(1)
             self.arduino.write(b'\x52')  # 右折
 
         # 待つ
         self.arduino.flush()
+
+        # 前の状態を保存する
+        self.preDirection = direction
