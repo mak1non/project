@@ -23,13 +23,13 @@ class Line:
         self.origImg = None
         self.binaryImg = None
 
-    def detectLine(self, onlyShow=False):
+    def detectLine(self, currentDirection=Direction.STOP, onlyShow=False):
         """線を認識する
         線が左右ブロックエリアに何 px 入っているのかをカウントし、
         それぞれ self.leftBlock と self.rightBlock に格納する
 
         Args:
-            onlyShow (bool, optional): 撮影のみ行う (デフォルト: False)
+            currentDirection (Direction, optional): 現在の進行方向 (デフォルト: Direction.STOP)
 
         Returns:
             Direction: 進行方向
@@ -71,41 +71,69 @@ class Line:
                 return Direction.STOP
 
             # 中央ブロックエリアの白ピクセルカウント
-            detCB = cv2.countNonZero(centerBlock)
+            self.detCB = cv2.countNonZero(centerBlock)
             # 左ブロックエリアの白ピクセルカウント
-            detLB = cv2.countNonZero(leftBlock)
+            self.detLB = cv2.countNonZero(leftBlock)
             # 右ブロックエリアの白ピクセルカウント
-            detRB = cv2.countNonZero(rightBlock)
+            self.detRB = cv2.countNonZero(rightBlock)
 
-            direction = self.__dirSelect(detCB, detLB, detRB)
+            direction = self.__dirSelect(currentDirection)
             return direction
 
         self.state = State.ERROR
         self.error = '画像の2値化失敗'
         return Direction.STOP
 
-    def __dirSelect(self, centerBlock, leftBlock, rightBlock):
+    def __dirSelect(self, currentDirection):
         """進行方向の決定
 
         Args:
-            centerBlock (int): 中央ブロックエリアの白ピクセル数
-            leftBlock (int): 左ブロックエリアの白ピクセル数
-            rightBlock (int): 右ブロックエリアの白ピクセル数
+            currentDirection (Direction): 現在の進行方向
         """
-        if centerBlock > 0 and leftBlock > 0 and rightBlock > 0:
+        # 各エリアの認識の有無
+        # 念のため明示的にbool型にしている
+        center = bool(self.detCB > 0)
+        left = bool(self.detLB > 0)
+        right = bool(self.detRB > 0)
+
+        # 左右折時
+        if currentDirection is Direction.LEFT:
+            if left:
+                return None
+            elif center:
+                # 中央
+                return Direction.FORWARD
+            elif right:
+                # 右折
+                return Direction.RIGHT
+            return None
+        elif currentDirection is Direction.RIGHT:
+            if right:
+                return None
+            if center:
+                # 中央
+                return Direction.FORWARD
+            elif left:
+                # 左折
+                return Direction.LEFT
+            return None
+
+        # 直進時
+        if center and left and right:
             # 停止線
             self.state = State.STANDBY
             return Direction.STOP
-        elif leftBlock > 0:
+        elif left:
             # 左に線が寄っている場合
             return Direction.LEFT
-        elif rightBlock > 0:
+        elif right:
             # 右に線が寄っている場合
             return Direction.RIGHT
-        elif centerBlock > 0:
+        elif center:
             # 中央
             # 線が見つからない時は、事前の状態を続けるため、この処理は動かない
             return Direction.FORWARD
+        return None
 
     def imgCheck(self):
         """detectLine() より前に呼ばれたらエラーを表示する
@@ -161,11 +189,11 @@ class Line:
         if self.imgCheck():
             # 時間の取得
             now = datetime.datetime.now()
-            time = now.strftime('%Y-%m-%dT%H_%M_%S')
+            saveTime = now.strftime('%Y-%m-%dT%H_%M_%S')
 
             # 写真の撮影
-            cv2.imwrite('pictures/' + time + '_orig.jpg', self.origImg)
-            cv2.imwrite('pictures/' + time + '_binary.jpg', self.binaryImg)
+            cv2.imwrite('pictures/' + saveTime + '_orig.jpg', self.origImg)
+            cv2.imwrite('pictures/' + saveTime + '_binary.jpg', self.binaryImg)
 
     def releaseCam(self):
         """カメラを閉じる

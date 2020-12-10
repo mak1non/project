@@ -32,6 +32,9 @@ def main():
         with ThreadPoolExecutor(max_workers=1) as executor:
             while True:
                 if line.state is State.STANDBY:
+                    # 車両に停止状態を伝える
+                    car.first = True
+
                     # 表示のみ
                     line.detectLine(onlyShow=True)
                     line.showImg()
@@ -40,7 +43,8 @@ def main():
                     executor.submit(car.run, Direction.STOP)
                 elif line.state is State.NORMAL:
                     # 線の認識
-                    direction = line.detectLine()
+                    direction = line.detectLine(
+                        currentDirection=car.preDirection)
                     line.showImg()
 
                     # 判定
