@@ -94,9 +94,9 @@ class Line:
         """
         # 各エリアの認識の有無
         # 念のため明示的にbool型にしている
-        center = bool(self.detCB > 0)
-        left = bool(self.detLB > 0)
-        right = bool(self.detRB > 0)
+        center = bool(self.detCB > 20)
+        left = bool(self.detLB > 20)
+        right = bool(self.detRB > 20)
 
         # 左右折時
         if currentDirection is Direction.LEFT:

@@ -96,9 +96,9 @@ void loop() {
             neutral(500);
         } else if (motorOut > 0) {
             if (carDir == LEFT) {
-                analogWrite(rightOut1, motorOut - 80);
+                analogWrite(rightOut1, motorOut - 110);
             } else if (carDir == RIGHT) {
-                analogWrite(leftOut1, motorOut - 80);
+                analogWrite(leftOut1, motorOut - 110);
             } else {
                 analogWrite(leftOut1, motorOut);
                 analogWrite(rightOut1, motorOut + diff);
