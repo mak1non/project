@@ -52,13 +52,15 @@ class Line:
         grayImg = cv2.cvtColor(trimImg, cv2.COLOR_BGR2GRAY)
 
         # 画像の2値化
-        ret, self.binaryImg = cv2.threshold(grayImg, self.cfg.threshold,
-                                            self.cfg.maxValue,
-                                            cv2.THRESH_BINARY_INV)
-        if ret:
+        self.binaryImg = cv2.adaptiveThreshold(grayImg, self.cfg.maxValue,
+                                               cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                               cv2.THRESH_BINARY_INV,
+                                               self.cfg.blockSize, self.cfg.c)
+        if self.binaryImg is not None:
             # 中央ブロックエリアのフレームをセット
-            centerBlock = self.binaryImg[
-                0:self.cfg.trimH, self.cfg.leftArea[1]:self.cfg.rightArea[0]]
+            centerBlock = self.binaryImg[0:self.cfg.trimH,
+                                         (self.cfg.leftArea[1] +
+                                          20):(self.cfg.rightArea[0] - 20)]
             # 左ブロックエリアのフレームをセット
             leftBlock = self.binaryImg[
                 0:self.cfg.trimH, self.cfg.leftArea[0]:self.cfg.leftArea[1]]
@@ -166,7 +168,7 @@ class Line:
             cv2.imshow('Sensor', self.binaryImg)
 
             # 1000ms / 30fps (Camera) = 33.3(...)
-            key = cv2.waitKey(30) & 0xFF
+            key = cv2.waitKey(35) & 0xFF
 
             # キーの判別
             if key is ord('a') or key is ord('A'):

@@ -16,7 +16,7 @@ class Config:
         config_test = config_ini['DEFAULT']
 
         # 設定ファイル未存在時の処理
-        if config_test.get('test') is None:
+        if config_test.get('version') != '2':
             print('注意: 設定ファイルが存在しません。新規作成します。')
             self.__writeDefault()
         else:
@@ -28,27 +28,27 @@ class Config:
         config = configparser.SafeConfigParser()
 
         # テスト用
-        config['DEFAULT'] = {'test': True}
+        config['DEFAULT'] = {'version': 2}
 
         # カメラ番号
         config['camera'] = {'index': 0}
 
         # 2値化の設定
-        config['binary'] = {'threshold': 64, 'maxValue': 255}
+        config['binary'] = {'block_size': 15, 'c': 7, 'max_value': 255}
 
         # トリミングサイズ
-        config['trim'] = {'y_coordinate': 420, 'height': 30}
+        config['trim'] = {'y_coordinate': 420, 'height': 50}
 
         # 左右ブロックエリア
         config['area'] = {
-            'L_start': 40,
-            'L_end': 130,
-            'R_start': 410,
-            'R_end': 500
+            'l_start': 40,
+            'l_end': 130,
+            'r_start': 410,
+            'r_end': 500
         }
 
         # 設定の書き込み
-        with open('config.ini', 'w') as file:
+        with open('config.ini', 'x') as file:
             config.write(file)
 
         self.__readConfig(config)
@@ -60,20 +60,19 @@ class Config:
             config (SafeConfigParser): 設定オブジェクト
         """
         # カメラ番号
-        cfg = config['camera']
-        self.cIndex = int(cfg.get('index'))
+        self.cIndex = int(config['camera']['index'])
 
         # 2値化の設定
-        cfg = config['binary']
-        self.threshold = int(cfg.get('threshold'))
-        self.maxValue = int(cfg.get('maxValue'))
+        self.blockSize = int(config['binary']['block_size'])
+        self.c = int(config['binary']['c'])
+        self.maxValue = int(config['binary']['max_value'])
 
         # トリミングサイズ
-        cfg = config['trim']
-        self.trimY = int(cfg.get('y_coordinate'))
-        self.trimH = int(cfg.get('height'))
+        self.trimY = int(config['trim']['y_coordinate'])
+        self.trimH = int(config['trim']['height'])
 
         # 左右ブロックエリア
-        cfg = config['area']
-        self.leftArea = (int(cfg.get('L_start')), int(cfg.get('L_end')))
-        self.rightArea = (int(cfg.get('R_start')), int(cfg.get('R_end')))
+        self.leftArea = (int(config['area']['l_start']),
+                         int(config['area']['l_end']))
+        self.rightArea = (int(config['area']['r_start']),
+                          int(config['area']['r_end']))

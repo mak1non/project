@@ -80,8 +80,5 @@ class Car:
         # 方向を表示
         print(direction)
 
-        # 待つ
-        self.arduino.flush()
-
         # 前の状態を保存する
         self.preDirection = direction
