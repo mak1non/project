@@ -4,6 +4,7 @@ import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from car import Car
+from config import Config
 from direction import Direction
 from line import Line
 from state import State
@@ -13,8 +14,11 @@ def main():
     # 画像保存ディレクトリ作成
     os.makedirs('pictures/', mode=0o755, exist_ok=True)
 
+    # 設定の取得
+    config = Config()
+
     # カメラの取得
-    line = Line()
+    line = Line(config)
 
     # カメラ取得チェック
     if line.camera.isOpened() is False:

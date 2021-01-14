@@ -4,12 +4,13 @@ from direction import Direction
 
 
 class Car:
-    def __init__(self, port='/dev/ttyACM0', baudrate=115200):
+    def __init__(self, port='/dev/ttyACM0', baudrate=115200, wait=1):
         """Arduino に指示を出すクラス
 
         Args:
             port (str, optional): 出力先のシリアルポート (デフォルト: '/dev/ttyACM0')
             baud (int, optional): 通信間隔 (デフォルト: 115200)
+            wait (int, optional): カーブ時の待ち時間 (デフォルト: 1)
         """
         # 初期化
         self.first = True
@@ -18,6 +19,9 @@ class Car:
         # シリアル通信の設定値
         self.port = port
         self.baudrate = baudrate
+
+        # カーブ時の待ち時間
+        self.wait = wait
 
     def __enter__(self):
         """シリアル通信の準備
@@ -58,23 +62,19 @@ class Car:
         elif self.first:
             self.first = False
             if direction is Direction.LEFT:
-                self.arduino.write(b'\x53')  # 停止
-                time.sleep(1)
+                time.sleep(self.wait)
                 self.arduino.write(b'\x4c')  # 左折
             elif direction is Direction.RIGHT:
-                self.arduino.write(b'\x53')  # 停止
-                time.sleep(1)
+                time.sleep(self.wait)
                 self.arduino.write(b'\x52')  # 右折
         else:
             if self.preDirection is Direction.STOP:
                 return
             elif direction is Direction.LEFT:
-                self.arduino.write(b'\x53')  # 停止
-                time.sleep(1)
+                time.sleep(self.wait)
                 self.arduino.write(b'\x4c')  # 左折
             elif direction is Direction.RIGHT:
-                self.arduino.write(b'\x53')  # 停止
-                time.sleep(1)
+                time.sleep(self.wait)
                 self.arduino.write(b'\x52')  # 右折
 
         # 方向を表示

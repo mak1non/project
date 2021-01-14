@@ -1,14 +1,13 @@
 import cv2
 import datetime
-from config import Config
 from direction import Direction
 from state import State
 
 
 class Line:
-    def __init__(self):
+    def __init__(self, config):
         # 設定ファイル
-        self.cfg = Config()
+        self.cfg = config
 
         # 状態
         self.state = State.STANDBY

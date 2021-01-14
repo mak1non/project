@@ -16,7 +16,7 @@ class Config:
         config_test = config_ini['DEFAULT']
 
         # 設定ファイル未存在時の処理
-        if config_test.get('version') != '2':
+        if config_test.get('version') != '3':
             print('注意: 設定ファイルが存在しません。新規作成します。')
             self.__writeDefault()
         else:
@@ -28,7 +28,7 @@ class Config:
         config = configparser.SafeConfigParser()
 
         # テスト用
-        config['DEFAULT'] = {'version': 2}
+        config['DEFAULT'] = {'version': 3}
 
         # カメラ番号
         config['camera'] = {'index': 0}
@@ -47,8 +47,11 @@ class Config:
             'r_end': 500
         }
 
+        # カーブ時の待ち時間
+        config['turn'] = {'wait': 1}
+
         # 設定の書き込み
-        with open('config.ini', 'x') as file:
+        with open('config.ini', 'w') as file:
             config.write(file)
 
         self.__readConfig(config)
@@ -76,3 +79,6 @@ class Config:
                          int(config['area']['l_end']))
         self.rightArea = (int(config['area']['r_start']),
                           int(config['area']['r_end']))
+
+        # カーブ時の待つ時間
+        self.turn_wait = float(config['turn']['wait'])
