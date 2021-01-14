@@ -99,7 +99,11 @@ class Line:
 
         # 左右折時
         if currentDirection is Direction.LEFT:
-            if center:
+            if center and left and right:
+                # 停止線
+                self.state = State.STANDBY
+                return Direction.STOP
+            elif center:
                 # 中央
                 return Direction.FORWARD
             elif right:
@@ -107,7 +111,11 @@ class Line:
                 return Direction.RIGHT
             return None
         elif currentDirection is Direction.RIGHT:
-            if center:
+            if center and left and right:
+                # 停止線
+                self.state = State.STANDBY
+                return Direction.STOP
+            elif center:
                 # 中央
                 return Direction.FORWARD
             elif left:
