@@ -99,9 +99,7 @@ class Line:
 
         # 左右折時
         if currentDirection is Direction.LEFT:
-            if left:
-                return None
-            elif center:
+            if center:
                 # 中央
                 return Direction.FORWARD
             elif right:
@@ -109,8 +107,6 @@ class Line:
                 return Direction.RIGHT
             return None
         elif currentDirection is Direction.RIGHT:
-            if right:
-                return None
             if center:
                 # 中央
                 return Direction.FORWARD
